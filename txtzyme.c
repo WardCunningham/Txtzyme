@@ -34,7 +34,7 @@
 
 void send_str(const char *s);
 uint8_t recv_str(char *buf, uint8_t size);
-void parse(const char *buf, uint8_t num);
+void parse(const char *buf);
 
 // Basic command interpreter for controlling port pins
 int main(void) {
@@ -70,7 +70,7 @@ int main(void) {
 			n = recv_str(buf, sizeof(buf));
 			if (n == 255) break;
 			// send_str(PSTR("\r\n"));
-			parse(buf, n);
+			parse(buf);
 		}
 	}
 }
@@ -105,10 +105,10 @@ uint8_t recv_str(char *buf, uint8_t size) {
 	int16_t r;
 	uint8_t count=0;
 
-	while (count < size) {
+	while (count < (size-1)) {
 		r = usb_serial_getchar();
 		if (r != -1) {
-			if (r == '\r' || r == '\n') return count;
+			if (r == '\r' || r == '\n') break;
 			if (r >= ' ' && r <= '~') {
 				*buf++ = r;
 				// usb_serial_putchar(r);
@@ -118,12 +118,14 @@ uint8_t recv_str(char *buf, uint8_t size) {
 			if (!usb_configured() ||
 			  !(usb_serial_get_control() & USB_SERIAL_DTR)) {
 				// user no longer connected
+				*buf = 0;
 				return 255;
 			}
 			// just a normal timeout, keep waiting
 		}
 	}
-	return count;
+	*buf = 0;
+	return 0;
 }
 
 // parse a user command and execute it, or print an error message
@@ -175,9 +177,10 @@ void execute (const char ch) {
 	}
 }
 
-void parse(const char *buf, uint8_t num) {
-	while (num--) {
-		execute(*buf++);
+void parse(const char *buf) {
+	char ch;
+	while (ch = *buf++) {
+		execute(ch);
 	}
 }
 
