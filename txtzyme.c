@@ -179,6 +179,9 @@ void parse(const char *buf) {
 				}
 				*(uint8_t *)(0x21 + port * 3) |= (1 << pin);		// direction = output
 				break;
+			case 'm':
+				_delay_ms(x);
+				break;
 		}
 	}
 }
