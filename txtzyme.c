@@ -135,52 +135,51 @@ uint8_t port = 'd'-'a';
 uint8_t pin = 6;
 uint16_t x = 0;
 
-void execute (const char ch) {
-	switch (ch) {
-		case '0':
-		case '1':
-		case '2':
-		case '3':
-		case '4':
-		case '5':
-		case '6':
-		case '7':
-		case '8':
-		case '9':
-			x = x * 10 + (ch - '0');
-			break;
-		case 'p':
-			send_num(x);
-			send_str(PSTR("\r\n"));
-			break;
-		case 'a':
-		case 'b':
-		case 'c':
-		case 'd':
-		case 'e':
-		case 'f':
-			port = ch - 'a';
-			pin = x % 8;
-			break;
-		case '?':
-			*(uint8_t *)(0x21 + port * 3) &= ~(1 << pin);		// direction = input
-			x = *(uint8_t *)(0x20 + port * 3) & (1 << pin) ? 1 : 0;	// x = pin
-			break;
-		case '!':
-			if (x % 2) {
-				*(uint8_t *)(0x22 + port * 3) |= (1 << pin);	// pin = hi
-			} else {
-				*(uint8_t *)(0x22 + port * 3) &= ~(1 << pin);	// pin = low
-			}
-			*(uint8_t *)(0x21 + port * 3) |= (1 << pin);		// direction = output
-			break;
-	}
-}
-
 void parse(const char *buf) {
 	char ch;
 	while (ch = *buf++) {
-		execute(ch);
+		switch (ch) {
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+				x = ch - '0';
+				while (*buf >= '0' && *buf <= '9') {
+					x = x*10 + (*buf++ - '0');
+				}
+				break;
+			case 'p':
+				send_num(x);
+				send_str(PSTR("\r\n"));
+				break;
+			case 'a':
+			case 'b':
+			case 'c':
+			case 'd':
+			case 'e':
+			case 'f':
+				port = ch - 'a';
+				pin = x % 8;
+				break;
+			case '?':
+				*(uint8_t *)(0x21 + port * 3) &= ~(1 << pin);		// direction = input
+				x = *(uint8_t *)(0x20 + port * 3) & (1 << pin) ? 1 : 0;	// x = pin
+				break;
+			case '!':
+				if (x % 2) {
+					*(uint8_t *)(0x22 + port * 3) |= (1 << pin);	// pin = hi
+				} else {
+					*(uint8_t *)(0x22 + port * 3) &= ~(1 << pin);	// pin = low
+				}
+				*(uint8_t *)(0x21 + port * 3) |= (1 << pin);		// direction = output
+				break;
+		}
 	}
 }
 
