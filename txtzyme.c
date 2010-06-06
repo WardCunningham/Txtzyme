@@ -184,6 +184,9 @@ void parse(const char *buf) {
 			case 'm':
 				_delay_ms(x);
 				break;
+			case 'u':
+				_delay_loop_2(x*(F_CPU/4000000UL));
+				break;
 			case '{':
 				count = x;
 				loop = buf;
