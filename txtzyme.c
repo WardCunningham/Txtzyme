@@ -137,7 +137,7 @@ uint16_t x = 0;
 
 void parse(const char *buf) {
 	char ch;
-	while (ch = *buf++) {
+	while ((ch = *buf++)) {
 		switch (ch) {
 			case '0':
 			case '1':
