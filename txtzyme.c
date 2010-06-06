@@ -167,11 +167,11 @@ void parse(const char *buf) {
 				port = ch - 'a';
 				pin = x % 8;
 				break;
-			case '?':
+			case 'i':
 				*(uint8_t *)(0x21 + port * 3) &= ~(1 << pin);		// direction = input
 				x = *(uint8_t *)(0x20 + port * 3) & (1 << pin) ? 1 : 0;	// x = pin
 				break;
-			case '!':
+			case 'o':
 				if (x % 2) {
 					*(uint8_t *)(0x22 + port * 3) |= (1 << pin);	// pin = hi
 				} else {
