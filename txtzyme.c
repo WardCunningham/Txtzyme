@@ -38,7 +38,7 @@ void parse(const char *buf);
 
 // Basic command interpreter for controlling port pins
 int main(void) {
-	char buf[32];
+	char buf[64];
 	uint8_t n;
 
 	// set for 16 MHz clock, and turn on the LED
@@ -136,6 +136,8 @@ uint8_t pin = 6;
 uint16_t x = 0;
 
 void parse(const char *buf) {
+	uint16_t count = 0;
+	char *loop;
 	char ch;
 	while ((ch = *buf++)) {
 		switch (ch) {
@@ -181,6 +183,17 @@ void parse(const char *buf) {
 				break;
 			case 'm':
 				_delay_ms(x);
+				break;
+			case '{':
+				count = x;
+				loop = buf;
+				while ((ch = *buf++) && ch != '}') {
+				}
+			case '}':
+				if (count) {
+					count--;
+					buf = loop;
+				}
 				break;
 		}
 	}
