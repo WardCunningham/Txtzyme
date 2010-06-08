@@ -198,6 +198,15 @@ void parse(const char *buf) {
 					buf = loop;
 				}
 				break;
+			case 'k':
+				x = count;
+				break;
+			case '_':
+				while ((ch = *buf++) && ch != '_') {
+					usb_serial_putchar(ch);
+				}
+				send_str(PSTR("\r\n"));
+				break;
 		}
 	}
 }
