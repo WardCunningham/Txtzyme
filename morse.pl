@@ -29,9 +29,9 @@ s/Y/-.-- /g;
 s/Z/--.. /g;
 print "$_\n";
 
-s/ /300m\n/g;
-s/\./50{1mom0o}100m\n/g;
-s/\-/150{1mom0o}100m\n/g;
+s/ /150m\n/g;
+s/\./25{1mom0o}50m\n/g;
+s/\-/75{1mom0o}50m\n/g;
 print;
 
 `echo '$_' >/dev/cu.usbmodem12341`;
