@@ -1,5 +1,6 @@
 $_ = 'THE QUICK BROWN FOX JUMPED OVER THE LAZY DOGS BACK';
 
+s/\w/_\l$&_$&/g;
 s/A/.- /g;
 s/B/-... /g;
 s/C/-.-. /g;
