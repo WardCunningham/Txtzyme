@@ -1,6 +1,6 @@
 $_ = 'THE QUICK BROWN FOX JUMPED OVER THE LAZY DOGS BACK';
 
-s/\w/_\l$&_$&/g;
+s/\w/_\l$&_\n$&/g;
 s/A/.- /g;
 s/B/-... /g;
 s/C/-.-. /g;
@@ -27,9 +27,9 @@ s/W/.-- /g;
 s/X/-..- /g;
 s/Y/-.-- /g;
 s/Z/--.. /g;
-print "$_\n";
 
-s/ /150m\n/g;
+s/ /mmm\n/g;
+s/mmm\nmmm/_ _\n$&/g;
 s/\./25{1mom0o}50m\n/g;
 s/\-/75{1mom0o}50m\n/g;
 print;
