@@ -26,6 +26,7 @@
 #include <stdint.h>
 #include <util/delay.h>
 #include "usb_serial.h"
+#include "analog.h"
 
 #define LED_CONFIG	(DDRD |= (1<<6))
 #define LED_OFF		(PORTD &= ~(1<<6))
@@ -206,6 +207,9 @@ void parse(const char *buf) {
 					usb_serial_putchar(ch);
 				}
 				send_str(PSTR("\r\n"));
+				break;
+			case 's':
+				x = analogRead(x);
 				break;
 		}
 	}
