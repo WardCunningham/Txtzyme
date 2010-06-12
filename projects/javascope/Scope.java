@@ -126,7 +126,7 @@ class ScopePanel extends JPanel implements Runnable {
 			polyline.moveTo (0, ((Integer)results[0]).intValue());
 
 			for (int index = 1; index < results.length; index++) {
-			 	 polyline.lineTo(index*3, ((Integer)results[index]).intValue());
+			 	 polyline.lineTo(index*3, ((Integer)results[index]).intValue()/2);
 			};
 
 			Graphics2D g2 = (Graphics2D) g;
