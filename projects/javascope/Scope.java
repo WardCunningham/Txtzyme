@@ -120,10 +120,11 @@ class ScopePanel extends JPanel implements Runnable {
 		// draw GeneralPath (polyline)
 
 		try {
+			if (!Scope.results.isEmpty()) {
 			Object results[] = Scope.results.toArray();
-			GeneralPath polyline =  new GeneralPath(GeneralPath.WIND_EVEN_ODD, results.length);
+			Path2D polyline =  new Path2D.Float(GeneralPath.WIND_EVEN_ODD, results.length);
 
-			polyline.moveTo (0, ((Integer)results[0]).intValue());
+			polyline.moveTo (0, ((Integer)results[0]).intValue()/2);
 
 			for (int index = 1; index < results.length; index++) {
 			 	 polyline.lineTo(index*3, ((Integer)results[index]).intValue()/2);
@@ -133,8 +134,10 @@ class ScopePanel extends JPanel implements Runnable {
 			g2.setStroke(new BasicStroke(2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 			g2.draw(polyline);
+			}
 		}
 		catch (Exception e) {
+			System.out.println(e);
 			Scope.line = e.toString();
 		}
 
