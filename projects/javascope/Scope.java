@@ -1,8 +1,18 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.io.*;
+import java.util.Scanner;
+import java.awt.geom.*;
+import java.awt.Graphics2D;
+import java.util.*;
+
+// while sleep .0805; do echo _data_200{5sp} >cu.usbmodem; done
+
 
 public class Scope extends JApplet {
+	public static String line = "";
+	public static java.util.List<Integer> results = new ArrayList<Integer>(5000);
 
 	public void init() {
 		ScopePanel scopePanel = new ScopePanel();
@@ -28,6 +38,35 @@ public class Scope extends JApplet {
 
 	static void fork(ScopePanel scopePanel) {
 		(new Thread(scopePanel, "Scope Refresh")).start();
+		(new Thread(new TxtzymeReader(), "Results Reader")).start();
+	}
+}
+
+class TxtzymeReader implements Runnable {
+	public void run() {
+		System.out.println("TxtzymeReader starting");
+		Scanner results = null;
+		try {
+			results = new Scanner(new BufferedReader(new FileReader("/dev/cu.usbmodem12341")));
+			while (results.hasNext()) {
+				String result = results.next();
+				try {
+					Scope.results.add(new Integer(result));
+				}
+				catch (Exception e) {
+					Scope.results.clear();
+					Scope.line = result;
+				}
+			}
+		}
+		catch (FileNotFoundException e) {
+			System.out.println(e.getMessage());
+		}
+		finally {
+			if (results != null) {
+				results.close();
+			}
+		}
 	}
 }
 
@@ -53,7 +92,7 @@ class ScopePanel extends JPanel implements Runnable {
 
 
 	public void run() {
-	try {
+		try {
 			while (true) {
 				Thread.sleep(25);
 				repaint();
@@ -68,7 +107,7 @@ class ScopePanel extends JPanel implements Runnable {
 		super.paintComponent(g); //paint background
 
 		g.setColor(Color.gray);
-		g.drawString("drag to draw", 20, 15);
+		g.drawString(Scope.line, 20, 15);
 
 		g.setColor(Color.yellow);
 		g.fillOval(from.x, from.y, to.x-from.x, to.y-from.y);
@@ -77,5 +116,25 @@ class ScopePanel extends JPanel implements Runnable {
 
 		g.setColor(Color.black);
 		g.drawLine(from.x, from.y, to.x, to.y);
+
+		// draw GeneralPath (polyline)
+
+		try {
+			Object results[] = Scope.results.toArray();
+			GeneralPath polyline =  new GeneralPath(GeneralPath.WIND_EVEN_ODD, results.length);
+
+			polyline.moveTo (0, ((Integer)results[0]).intValue());
+
+			for (int index = 1; index < results.length; index++) {
+			 	 polyline.lineTo(index*3, ((Integer)results[index]).intValue());
+			};
+
+			Graphics2D g2 = (Graphics2D) g;
+			g2.draw(polyline);
+		}
+		catch (Exception e) {
+			Scope.line = e.toString();
+		}
+
 	}
 }
