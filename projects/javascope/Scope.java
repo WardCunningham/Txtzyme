@@ -7,7 +7,7 @@ import java.awt.geom.*;
 import java.awt.Graphics2D;
 import java.util.*;
 
-// while sleep .0805; do echo _data_200{5sp} >cu.usbmodem; done
+// while sleep .0805; do echo _data_200{5sp} >/dev/cu.usbmodem12341; done
 
 
 public class Scope extends JApplet {
