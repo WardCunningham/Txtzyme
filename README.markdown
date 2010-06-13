@@ -47,7 +47,7 @@ The underscore was chosen over single or double quotes for the simple reason tha
 
 - `s` samples analog input from mux channel x, replacing x with the sampled data.
 
-Input is referenced to vcc and ranges from 0 to 1023. Teency mux channels correspond to pins in the order they appear on the edge of the board: F0, F1, F4, F5, F6, F7, B6, B5, B4, D7, D6, D4. Any operation of the LED is likely to interfere with using D6 as an analog input.
+Input is referenced to vcc and ranges from 0 to 1023. Teensy mux channels correspond to pins in the order they appear on the edge of the board: F0, F1, F4, F5, F6, F7, B6, B5, B4, D7, D6, D4. Any operation of the LED is likely to interfere with using D6 as an analog input.
 
 
 Learn More
