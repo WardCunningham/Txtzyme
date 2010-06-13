@@ -39,7 +39,7 @@ A delay precise delay of, say 14.666 milliseconds can be written as the program 
 
 Loops can't (yet) be nested, nor can loops span lines. The x that controls the loop need not be literal. For example, `3bi{ ... }` describes a loop that will be executed only when pin B3 is high.
 
-The program `11{kp1000m}` counts down by seconds from 10 to 0. The program `8{kbp}` prints each bit of the B port, from B7 to B0.
+The program `11{kp1000m}` counts down by seconds from 10 to 0. The program `8{kbip}` prints each bit of input port B, from B7 to B0.
 
 - `_` outputs characters to the USB host, up to the next _ character or end of line.
 
