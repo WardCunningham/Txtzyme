@@ -1,30 +1,19 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.*;
 import javax.swing.*;
 import java.io.*;
-import java.util.Scanner;
-import java.awt.geom.*;
-import java.awt.Graphics2D;
 import java.util.*;
 
-// while sleep .0805; do echo _data_200{5sp} >/dev/cu.usbmodem12341; done
-
-
 public class Scope extends JApplet {
+
 	public static String line = "";
 	public static java.util.List<Integer> results = new ArrayList<Integer>(5000);
-
-	public void init() {
-		ScopePanel scopePanel = new ScopePanel();
-		getContentPane().add(scopePanel, BorderLayout.CENTER);
-		fork(scopePanel);
-	}
-
 
 	public static void main(String[] args) throws InterruptedException {
 		ScopePanel scopePanel = new ScopePanel();
 
-		JFrame f = new JFrame("Texzyme Javascope");
+		JFrame f = new JFrame("Txtzyme Javascope");
 		f.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
@@ -34,6 +23,7 @@ public class Scope extends JApplet {
 		f.setSize(621+6, 356+16);
 		f.setVisible(true);
 		fork(scopePanel);
+
 		System.out.println("Try this from the shell:");
 		System.out.println("  while sleep .0805; do echo _data_220{5sp} >/dev/cu.usbmodem12341; done");
 	}
@@ -91,7 +81,6 @@ class ScopePanel extends JPanel implements Runnable {
 		});
 	 }
 
-
 	public void run() {
 		try {
 			while (true) {
@@ -118,29 +107,25 @@ class ScopePanel extends JPanel implements Runnable {
 		g.setColor(Color.black);
 		g.drawLine(from.x, from.y, to.x, to.y);
 
-		// draw GeneralPath (polyline)
-
 		try {
 			if (!Scope.results.isEmpty()) {
-			Object results[] = Scope.results.toArray();
-			Path2D polyline =  new Path2D.Float(GeneralPath.WIND_EVEN_ODD, results.length);
+				Object results[] = Scope.results.toArray();
 
-			polyline.moveTo (0, ((Integer)results[0]).intValue()/2);
+				Path2D polyline =  new Path2D.Float(GeneralPath.WIND_EVEN_ODD, results.length);
+				polyline.moveTo (0, ((Integer)results[0]).intValue()/2);
+				for (int index = 1; index < results.length; index++) {
+				 	 polyline.lineTo(index*3, ((Integer)results[index]).intValue()/2);
+				};
 
-			for (int index = 1; index < results.length; index++) {
-			 	 polyline.lineTo(index*3, ((Integer)results[index]).intValue()/2);
-			};
-
-			Graphics2D g2 = (Graphics2D) g;
-			g2.setStroke(new BasicStroke(2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-			g2.draw(polyline);
+				Graphics2D g2 = (Graphics2D) g;
+				g2.setStroke(new BasicStroke(2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+				g2.draw(polyline);
 			}
 		}
 		catch (Exception e) {
 			System.out.println(e);
 			Scope.line = e.toString();
 		}
-
 	}
 }
