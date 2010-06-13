@@ -34,6 +34,8 @@ public class Scope extends JApplet {
 		f.setSize(621+6, 356+16);
 		f.setVisible(true);
 		fork(scopePanel);
+		System.out.println("Try this from the shell:");
+		System.out.println("  while sleep .0805; do echo _data_220{5sp} >/dev/cu.usbmodem12341; done");
 	}
 
 	static void fork(ScopePanel scopePanel) {
@@ -44,7 +46,6 @@ public class Scope extends JApplet {
 
 class TxtzymeReader implements Runnable {
 	public void run() {
-		System.out.println("TxtzymeReader starting");
 		Scanner results = null;
 		try {
 			results = new Scanner(new BufferedReader(new FileReader("/dev/cu.usbmodem12341")));
