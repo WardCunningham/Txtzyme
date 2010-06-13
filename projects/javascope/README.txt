@@ -21,3 +21,7 @@ Then run one or more shell commands to produce data.
 $ echo _fast_220{5sp} >/dev/cu.usbmodem12341 
 $ echo _slow_6d1o220{5sp16m600u}0o >/dev/cu.usbmodem12341
 $ while sleep .0805; do echo _rep_220{5sp} >/dev/cu.usbmodem12341; done
+
+Try running Timebase.sh. It makes a good demo because it alternates between slow and fast acquisitions (those with and without 16m600u delay).
+
+$ sh Timebase.sh
