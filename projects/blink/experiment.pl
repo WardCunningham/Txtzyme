@@ -23,7 +23,7 @@ sub experiment {
 	for $period (split(/\s+/, `jot -r 10 50 250`)) {
 		my $result;
 		while() {
-			`echo 5{1o${period}m0o${period}m} >$teensy`;
+			`echo 300m5{1o${period}m0o${period}m} >$teensy`;
 			$result = getc;
 			last if $result =~ /[1-9]/;
 			`say again`;
