@@ -1,3 +1,4 @@
+
 Txtzyme Blink
 -------------
 by Ward Cunningham
@@ -9,7 +10,7 @@ To test this hypothesis I wrote a Mac specific experiment manager. I chose to of
 Things to Try
 -------------
 
-Try collecting data from yourself and your friends. 
+Try collecting data from yourself and your friends.
 
 $ open instructions.rtf
 $ perl experiment.pl
@@ -17,28 +18,35 @@ $ perl experiment.pl
 This will display instructions and then collect data through mechanisms suitable for volunteer participation at a club meeting. Results are timestamped and stored under the subject's initials within the results directory.
 
 $ perl tally.pl
+$ perl tally.pl 10
 
-This script reads and counts responses from all subjects. The results are then printed in tab-separated columns, one for each possible response, with each row corresponding to the stimulus half-cycle period in milliseconds. Here are some of my first results:
+This script reads and counts responses from all subjects. The results are then printed in tab-separated columns, one for each possible response, with each row corresponding to the stimulus half-cycle period in milliseconds, optionally clumped into bins. Here are some of my first results:
 
 	1	2	3	4	5	6	7	8	9
 
-50										
-51										
-52						1				
-53			1	1	1					
-54				1						
-55										
-56					1					
-57										
-58										
-59				2	1					
-60				1						
-61										
-62			1							
-63				1						
-64										
-65			2							
-66					1					
-67										
-68				2						
-69										
+50
+51
+52						1
+53			1	1	1
+54				1
+55
+56					1
+57
+58
+59				2	1
+60				1
+61
+62			1
+63				1
+64
+65			2
+66					1
+67
+68				2
+69
+
+
+More Experiments
+----------------
+
+You may want to try variations of this experiment changing environmental factors, like room illumination, time of day, age of subject or quantity of beer. You can also revise the script varying blink count, brightness or non-random presentation. Try adding an initial training session before collecting data. Sensitize your subjects by speaking some desired result before each trial. Compare their response to audible beeps instead of visual blinks. Add switches and solenoids to operant-condition your pets.
