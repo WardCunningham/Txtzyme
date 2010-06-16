@@ -24,8 +24,8 @@ public class Scope extends JApplet {
 		f.setVisible(true);
 		fork(scopePanel);
 
-		System.out.println("Try this from the shell:");
-		System.out.println("  while sleep .0805; do echo _data_220{5sp} >/dev/cu.usbmodem12341; done");
+		System.out.println("Try this to create output:");
+		System.out.println("  sh Timebase.sh");
 	}
 
 	static void fork(ScopePanel scopePanel) {
@@ -57,6 +57,7 @@ class TxtzymeReader implements Runnable {
 			if (results != null) {
 				results.close();
 			}
+			System.exit(0);
 		}
 	}
 }

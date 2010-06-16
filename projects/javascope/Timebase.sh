@@ -1,5 +1,10 @@
 # alternate between slow and fast acquistion
 
+echo "Try this to see output:"
+echo "  javac Scope.java"
+echo "  java Scope"
+
+set -e
 while true
 	do echo _slow_6d1o500{5sp16m600u}0o >/dev/cu.usbmodem12341;
 	sleep 10;
