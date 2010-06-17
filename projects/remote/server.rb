@@ -18,12 +18,12 @@ helpers do
   end
 end
 
-before do
-  @req = request.inspect
+get %r{/([b-f])/([0-7])} do |port, pin|
+  tz "#{pin}#{port}ip"
 end
 
-get %r{/([b-f])/([0-7])} do |port, pin|
-  tz "6d1o100m0o#{pin}#{port}ip"
+put %r{/([b-f])/([0-7])} do |port, pin|
+  tz "#{pin}#{port}#{params[:state]}op"
 end
 
 get '/' do
@@ -34,4 +34,3 @@ get '/stylesheet.css' do
   content_type 'text/css', :charset => 'utf-8'
   sass :stylesheet
 end
-

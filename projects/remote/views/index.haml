@@ -1,12 +1,11 @@
 %p
-  This server talks to a 
+  This form operates a
   %a(href="http://pjrc.com/teensy") Teensy
-  microcontroller running the 
+  microcontroller  running the
   %a(href="http://dorkbotpdx.org/blog/wardcunningham/shell_programming_with_txtzyme") Txtzyme
   interpreter.
-%p
-  Select a port, pin and mode. Select a state for outputs, inputs update automatically.
 %form
+  %p Select a port, pin and mode
   %ul
     %li
       %input(type="radio" name="port" value="b") B
@@ -23,10 +22,12 @@
       %input(type="radio" name="pin" value="5") 5
       %input(type="radio" name="pin" value="6" checked) 6
       %input(type="radio" name="pin" value="7") 7
+
+  %p Choose input to read; output to write
+  %ul
     %li
       %input(type="radio" name="direction" value="I") I
       %input(type="radio" name="direction" value="O" checked) O
     %li
       %input(type="radio" name="state" value="0") 0
       %input(type="radio" name="state" value="1") 1
-    
