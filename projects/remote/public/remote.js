@@ -16,7 +16,7 @@ $(document).ready(function(){
 
 	$('[name=direction][value=I]').click(function(obj){
 		$.ajax({ type: 'GET', url: port_pin(), success: function(data) {
-			$('[name=state][value='+data+']').focus();
+			$('[name=state][value='+data+']').attr('checked',true);
 		} });
 	});
 
