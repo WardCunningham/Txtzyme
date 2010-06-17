@@ -1,0 +1,32 @@
+%p
+  This server talks to a 
+  %a(href="http://pjrc.com/teensy") Teensy
+  microcontroller running the 
+  %a(href="http://dorkbotpdx.org/blog/wardcunningham/shell_programming_with_txtzyme") Txtzyme
+  interpreter.
+%p
+  Select a port, pin and mode. Select a state for outputs, inputs update automatically.
+%form
+  %ul
+    %li
+      %input(type="radio" name="port" value="b") B
+      %input(type="radio" name="port" value="c") C
+      %input(type="radio" name="port" value="d" checked) D
+      %input(type="radio" name="port" value="e") E
+      %input(type="radio" name="port" value="f") F
+    %li
+      %input(type="radio" name="pin" value="0") 0
+      %input(type="radio" name="pin" value="1") 1
+      %input(type="radio" name="pin" value="2") 2
+      %input(type="radio" name="pin" value="3") 3
+      %input(type="radio" name="pin" value="4") 4
+      %input(type="radio" name="pin" value="5") 5
+      %input(type="radio" name="pin" value="6" checked) 6
+      %input(type="radio" name="pin" value="7") 7
+    %li
+      %input(type="radio" name="direction" value="I") I
+      %input(type="radio" name="direction" value="O" checked) O
+    %li
+      %input(type="radio" name="state" value="0") 0
+      %input(type="radio" name="state" value="1") 1
+    

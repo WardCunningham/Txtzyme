@@ -1,0 +1,10 @@
+%html
+  %head
+    /
+      = @req
+    %script(type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js")
+    %script(type="text/javascript" src="remote.js")
+    %link(href="stylesheet.css" rel="stylesheet" type="text/css")
+  %body
+    .main
+      =yield
