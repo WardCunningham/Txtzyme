@@ -1,11 +1,11 @@
+%p
+  These forms operates a
+  %a(href="http://pjrc.com/teensy") Teensy
+  microcontroller  running the
+  %a(href="http://dorkbotpdx.org/blog/wardcunningham/shell_programming_with_txtzyme") Txtzyme
+  interpreter.
 %form
-  %p
-    This form operates a
-    %a(href="http://pjrc.com/teensy") Teensy
-    microcontroller  running the
-    %a(href="http://dorkbotpdx.org/blog/wardcunningham/shell_programming_with_txtzyme") Txtzyme
-    interpreter.
-  %p Select a port, pin and mode
+  %p Select a port and pin
   %ul
     %li
       %input(type="radio" name="port" value="b") B
@@ -23,7 +23,7 @@
       %input(type="radio" name="pin" value="6" checked) 6
       %input(type="radio" name="pin" value="7") 7
 
-  %p Choose input to read; output value to write
+  %p Choose input to read, value to write
   %ul
     %li
       %input(type="radio" name="direction" value="I") I
@@ -35,12 +35,12 @@
   %p Select analog channel
   %ul
     %li
-      %input(type="radio" name="channel" value=7) 7
-      %input(type="radio" name="channel" value=6) 6
-      %input(type="radio" name="channel" value=5) 5
-      %input(type="radio" name="channel" value=4) 4
-      %input(type="radio" name="channel" value=3) 3
-      %input(type="radio" name="channel" value=2) 2
-      %input(type="radio" name="channel" value=1) 1
       %input(type="radio" name="channel" value=0) 0
+      %input(type="radio" name="channel" value=1) 1
+      %input(type="radio" name="channel" value=2) 2
+      %input(type="radio" name="channel" value=3) 3
+      %input(type="radio" name="channel" value=4) 4
+      %input(type="radio" name="channel" value=5) 5
+      %input(type="radio" name="channel" value=6) 6
+      %input(type="radio" name="channel" value=7) 7
   %div.plot
