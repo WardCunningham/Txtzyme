@@ -22,9 +22,13 @@ $(document).ready(function(){
 
 	$('[name=channel]').click(function(obj){
 		var ch = obj.currentTarget.value;
-		$.getJSON('ch/'+ch, function (data) {
-			$.plot($(".plot"), [data], {});
-		});
+		function plot () {
+			$.getJSON('ch/'+ch, function (data) {
+				$.plot($(".plot"), [data], {});
+			});
+		}
+		plot();
+		$(".plot").unbind('click').click(plot);
 	});
 
 });
