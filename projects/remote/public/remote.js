@@ -22,12 +22,17 @@ $(document).ready(function(){
 
 	$('[name=channel]').click(function(obj){
 		var ch = obj.currentTarget.value;
-		$.getJSON('ch/'+ch, function (data) {
-			$.plot($(".plot"), [data], {
-				lines: { show: true },
-				xaxis: {  }
+		var rep = 5;
+		var doit = function() {
+			$.getJSON('ch/'+ch, function (data) {
+				$.plot($(".plot"), [data], {
+					lines: { show: true },
+					xaxis: {  }
+				});
+				if (rep-- > 0) setTimeout(doit,500);
 			});
-		});
+		};
+		doit();
 	});
 
 });
