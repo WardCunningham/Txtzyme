@@ -4,9 +4,9 @@ require 'haml'
 require 'sass'
 require 'json'
 
-use Rack::Auth::Basic do |username, password|
-  username == 'guest' && password == 'please'
-end
+#use Rack::Auth::Basic do |username, password|
+#  username == 'guest' && password == 'please'
+#end
 
 configure do
   $tz = File.open '/dev/cu.usbmodem12341', 'r+'
@@ -45,7 +45,7 @@ put %r{/([b-f])/([0-7])} do |port, pin|
 end
 
 get %r{/ch/([0-9])} do |ch|
-  vect "51{#{ch}sp100u}", (0..50).map{|i|i*50}
+  vect "101{#{ch}sp50u}", (0..100).map{|i|i*50}
 end
 
 get '/' do
