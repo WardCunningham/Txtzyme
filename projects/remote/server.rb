@@ -66,7 +66,7 @@ get %r{/ch/([0-9])} do |ch|
 end
 
 put '/slide' do
-  dict "6d0o35{0c1o#{params[:state]}u0o20m}6d1o"
+  dict "6d0o35{5d1o#{params[:state]}u0o20m}6d1o"
 end
 
 get '/' do
