@@ -65,6 +65,10 @@ get %r{/ch/([0-9])} do |ch|
   vect "101{#{ch}sp50u}", (0..100).map{|i|i*50}
 end
 
+put '/slide' do
+  dict "6d0o35{0c1o#{params[:state]}u0o20m}6d1o"
+end
+
 get '/' do
   content_type "text/html"
 	haml :index

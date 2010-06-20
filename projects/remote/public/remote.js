@@ -31,4 +31,15 @@ $(document).ready(function(){
 		$(".plot").unbind('click').click(plot);
 	});
 
+	$('#slider').slider({
+		min: 660,
+		max: 2140,
+		value: 1400,
+		step: 20,
+		animate: true,
+		slide: function(event, ui) {
+			$.ajax({ type: 'PUT', url: 'slide' , data: "state="+ui.value });
+		}
+	});
+
 });
