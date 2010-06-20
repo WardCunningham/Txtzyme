@@ -2,6 +2,7 @@ require 'rubygems'
 require 'sinatra'
 require 'haml'
 require 'sass'
+require 'json'
 
 use Rack::Auth::Basic do |username, password|
   username == 'guest' && password == 'please'
@@ -11,26 +12,48 @@ configure do
   $tz = File.open '/dev/cu.usbmodem12341', 'r+'
 end
 
+before do
+  content_type "application/json"
+end
+
 helpers do
-  def tz(prog)
-    $tz.puts prog
-    $tz.gets
+
+  def dict prog
+    $tz.puts prog + '_end_'
+    data = {}
+    while true do
+      key = $tz.gets.chomp
+      break if key == 'end'
+      data[key] = $tz.gets.to_i
+    end
+    data.to_json
   end
+
+  def vect prog, sequence
+    $tz.puts prog
+    sequence.collect{|i| [i, $tz.gets.to_i] }.to_json
+  end
+
 end
 
 get %r{/([b-f])/([0-7])} do |port, pin|
-  tz "#{pin}#{port}ip"
+  dict "_bit_#{pin}#{port}ip"
 end
 
 put %r{/([b-f])/([0-7])} do |port, pin|
-  tz "#{pin}#{port}#{params[:state]}op"
+  dict "_bit_#{pin}#{port}#{params[:state]}op"
+end
+
+get %r{/ch/([0-9])} do |ch|
+  vect "51{#{ch}sp100u}", (0..50).map{|i|i*50}
 end
 
 get '/' do
+  content_type "text/html"
 	haml :index
 end
 
 get '/stylesheet.css' do
-  content_type 'text/css', :charset => 'utf-8'
+  content_type 'text/css'
   sass :stylesheet
 end

@@ -15,9 +15,19 @@ $(document).ready(function(){
 	});
 
 	$('[name=direction][value=I]').click(function(obj){
-		$.ajax({ type: 'GET', url: port_pin(), success: function(data) {
-			$('[name=state][value='+data+']').attr('checked',true);
-		} });
+		$.getJSON(port_pin(), function(data) {
+			$('[name=state][value='+data.pin+']').attr('checked',true);
+		});
+	});
+
+	$('[name=channel]').click(function(obj){
+		var ch = obj.currentTarget.value;
+		$.getJSON('ch/'+ch, function (data) {
+			$.plot($(".plot"), [data], {
+				lines: { show: true },
+				xaxis: {  }
+			});
+		});
 	});
 
 });
