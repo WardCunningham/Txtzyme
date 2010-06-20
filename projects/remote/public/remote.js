@@ -16,7 +16,7 @@ $(document).ready(function(){
 
 	$('[name=direction][value=I]').click(function(obj){
 		$.getJSON(port_pin(), function(data) {
-			$('[name=state][value='+data.pin+']').attr('checked',true);
+			$('[name=state][value='+data.bit+']').attr('checked',true);
 		});
 	});
 
