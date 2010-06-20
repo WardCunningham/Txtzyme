@@ -18,20 +18,37 @@ end
 
 helpers do
 
+  def putz string
+    $tz.puts string
+    puts "\033[32m#{string}\033[0m"
+  end
+
+  def getz
+    $tz.gets.chomp
+  end
+
+  def sync
+    uniq = rand(1000000).to_s;
+    putz "_#{uniq}_"
+    result = getz until result == uniq
+  end
+
   def dict prog
-    $tz.puts prog + '_end_'
+    sync
+    putz prog + '_end_'
     data = {}
     while true do
-      key = $tz.gets.chomp
+      key = getz
       break if key == 'end'
-      data[key] = $tz.gets.to_i
+      data[key] = getz.to_i
     end
     data.to_json
   end
 
   def vect prog, sequence
-    $tz.puts prog
-    sequence.collect{|i| [i, $tz.gets.to_i] }.to_json
+    sync
+    putz prog
+    sequence.collect{|i| [i, getz.to_i] }.to_json
   end
 
 end
