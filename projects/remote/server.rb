@@ -66,9 +66,8 @@ get %r{/ch/([0-9])} do |ch|
 end
 
 get %r{/fft/([0-9])} do |ch|
-  x = 0..(N-1)
   putz "#{N}{#{ch}sp50u}"
-  f = x.collect{|i| getz.to_f}
+  f = (0..(N-1)).collect{|i| getz.to_f}
   mean = (f.inject(0){|s,e|s+e})/N
   f = f.collect{|y| y-mean }
   FFT f
@@ -92,14 +91,15 @@ end
 # http://juno.myjp.net/code/top.php
 
 require 'mathn'
+require 'enumerator'
 
 N = 1<<8
-f = Array.new(N) {|x| (x<N/2)? -1: 1}
-
 Hadamard = Matrix[[1,1],[1,-1]]/Math.sqrt(2)
+
 def Phase(theta)
   Matrix[[1,0],[0,Complex.polar(1,theta)]]
 end
+
 def R(k)
   lambda {|x,y| (Hadamard*Phase(2*Math::PI*k/N)*Vector[x,y]).to_a}
 end
@@ -118,8 +118,3 @@ def FFT(arr,s=0,n=arr.size)
   end
   return
 end
-
-# puts f
-# FFT(f)
-# puts f
-
