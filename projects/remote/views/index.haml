@@ -31,6 +31,7 @@
     %li
       %input(type="radio" name="state" value="0") 0
       %input(type="radio" name="state" value="1") 1
+
 %form
   %p Select analog channel
   %ul
@@ -44,6 +45,20 @@
       %input(type="radio" name="channel" value=6) 6
       %input(type="radio" name="channel" value=7) 7
   %div.plot
+
+%form
+  %p Select analog channel (fft)
+  %ul
+    %li
+      %input(type="radio" name="fft" value=0) 0
+      %input(type="radio" name="fft" value=1) 1
+      %input(type="radio" name="fft" value=2) 2
+      %input(type="radio" name="fft" value=3) 3
+      %input(type="radio" name="fft" value=4) 4
+      %input(type="radio" name="fft" value=5) 5
+      %input(type="radio" name="fft" value=6) 6
+      %input(type="radio" name="fft" value=7) 7
+  %div.fft
 
 %form
   %p Slide to adjust servo position

@@ -31,6 +31,17 @@ $(document).ready(function(){
 		$(".plot").unbind('click').click(plot);
 	});
 
+	$('[name=fft]').click(function(obj){
+		var ch = obj.currentTarget.value;
+		function plot () {
+			$.getJSON('fft/'+ch, function (data) {
+				$.plot($(".fft"), [data], {});
+			});
+		}
+		plot();
+		$(".fft").unbind('click').click(plot);
+	});
+
 	$('#slider').slider({
 		min: 660,
 		max: 2140,

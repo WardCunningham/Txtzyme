@@ -65,6 +65,16 @@ get %r{/ch/([0-9])} do |ch|
   vect "101{#{ch}sp50u}", (0..100).map{|i|i*50}
 end
 
+get %r{/fft/([0-9])} do |ch|
+  x = 0..(N-1)
+  putz "#{N}{#{ch}sp50u}"
+  f = x.collect{|i| getz.to_f}
+  mean = (f.inject(0){|s,e|s+e})/N
+  f = f.collect{|y| y-mean }
+  FFT f
+  (0..(N/2-1)).collect{|i| [i, f[i].abs.to_i]}.to_json
+end
+
 put '/slide' do
   dict "6d0o35{5d1o#{params[:state]}u0o20m}6d1o"
 end
@@ -78,3 +88,38 @@ get '/stylesheet.css' do
   content_type 'text/css'
   sass :stylesheet
 end
+
+# http://juno.myjp.net/code/top.php
+
+require 'mathn'
+
+N = 1<<8
+f = Array.new(N) {|x| (x<N/2)? -1: 1}
+
+Hadamard = Matrix[[1,1],[1,-1]]/Math.sqrt(2)
+def Phase(theta)
+  Matrix[[1,0],[0,Complex.polar(1,theta)]]
+end
+def R(k)
+  lambda {|x,y| (Hadamard*Phase(2*Math::PI*k/N)*Vector[x,y]).to_a}
+end
+
+def FFT(arr,s=0,n=arr.size)
+  abort 'error! not powers of 2' if n&(n-1)!=0
+  if n==2 then
+    arr[s],arr[s+1] = R(0).call(arr[s],arr[s+1])
+  else
+    arr[s,n] = arr.slice(s,n).partition.with_index {|_,i| i%2==0}.flatten
+    FFT(arr,s,n/2)
+    FFT(arr,s+n/2,n/2)
+    for i in 0...n/2 do
+      arr[s+i],arr[s+i+n/2] = R(i*N/n).call(arr[s+i],arr[s+i+n/2])
+    end
+  end
+  return
+end
+
+# puts f
+# FFT(f)
+# puts f
+
