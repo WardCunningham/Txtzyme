@@ -71,7 +71,7 @@ get %r{/fft/([0-9])} do |ch|
   mean = (f.inject(0){|s,e|s+e})/N
   f = f.collect{|y| y-mean }
   FFT f
-  (0..(N/2-1)).collect{|i| [i, f[i].abs.to_i]}.to_json
+  (0..(N/2-1)).collect{|i| [20000.0*i/N, f[i].abs]}.to_json
 end
 
 put '/slide' do
@@ -91,7 +91,6 @@ end
 # http://juno.myjp.net/code/top.php
 
 require 'mathn'
-require 'enumerator'
 
 N = 1<<8
 Hadamard = Matrix[[1,1],[1,-1]]/Math.sqrt(2)
@@ -109,7 +108,8 @@ def FFT(arr,s=0,n=arr.size)
   if n==2 then
     arr[s],arr[s+1] = R(0).call(arr[s],arr[s+1])
   else
-    arr[s,n] = arr.slice(s,n).partition.with_index {|_,i| i%2==0}.flatten
+    i=-1
+    arr[s,n] = arr.slice(s,n).partition {|_| i+=1; i%2==0}.flatten
     FFT(arr,s,n/2)
     FFT(arr,s+n/2,n/2)
     for i in 0...n/2 do
