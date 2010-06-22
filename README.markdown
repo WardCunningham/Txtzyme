@@ -14,7 +14,7 @@ Txtzyme is distributed as source on GitHub. One is expected to fork this repo fo
 Getting Started
 ---------------
 
-Txtzyme runs on Teensy and Teensy++ versions 1.0 and 2.0. These devices are inexpensive and well supported by pjrc.com. Once you are in possession of a device you will need to:
+Txtzyme runs on Teensy and Teensy++ versions 1.0 and 2.0. These devices are available, inexpensive and well supported by <http://pjrc.com/teensy>. Once you are in possession of a device you will need to:
 
 - Download Txtzyme from <http://github.com/WardCunningham/Txtzyme>
 - Download the AVR cross compiler from <http://www.obdev.at/products/crosspack/download.html>
