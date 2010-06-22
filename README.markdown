@@ -18,7 +18,7 @@ Txtzyme runs on Teensy and Teensy++ versions 1.0 and 2.0. These devices are inex
 
 - Download Txtzyme from <http://github.com/WardCunningham/Txtzyme>
 - Download the AVR cross compiler from <http://www.obdev.at/products/crosspack/download.html>
-- Download the Teensy loader <from http://pjrc.com/teensy/loader.html>
+- Download the Teensy loader from <http://pjrc.com/teensy/loader.html>
 
 Each of these sites have useful instructions. Once Txtzyme is running you can send commands to it from the shell as above or try any of the examples in the projects directory.
 
