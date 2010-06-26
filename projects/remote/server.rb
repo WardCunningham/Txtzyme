@@ -4,9 +4,9 @@ require 'haml'
 require 'sass'
 require 'json'
 
-#use Rack::Auth::Basic do |username, password|
-#  username == 'guest' && password == 'please'
-#end
+use Rack::Auth::Basic do |username, password|
+ username == 'guest' && password == 'please'
+end
 
 configure do
   $tz = File.open '/dev/cu.usbmodem12341', 'r+'
