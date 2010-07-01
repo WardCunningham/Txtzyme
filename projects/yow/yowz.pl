@@ -6,7 +6,7 @@ use strict;
 open T, ">/dev/cu.usbmodem12341" or die($!);
 select T; $| = 1;
 select STDOUT; $| = 1;
-sub tz  { print T "$_[0]\n" or die($!); }
+sub tz  { print "@_\n"; print T "@_\n" or die($!); }
 sub led { my ($led) = @_; tz "_led_ 6d $led o"; }
 
 # HDLx-2416 Pins
@@ -23,8 +23,8 @@ sub bl_ { my ($bl) = @_; tz "_bl_ 2d $bl o"; }
 
 # HDLx-2416 Registers
 
-sub ch  { my ($a, $ch) = @_; a $a; cue 0; cu_ 1; d ord($ch); wr_; }
-sub bri { my ($bri) = @_; a 0; cue 0; cu_ 0; d $bri*8; wr_; }
+sub ch  { my ($a, $ch) = @_; tz "_ch ${ch}_"; a $a; cue 0; cu_ 1; d ord($ch); wr_; }
+sub bri { my ($bri) = @_; tz "_bri ${bri}_"; a 0; cue 0; cu_ 0; d $bri*8; wr_; }
 
 # Initialize (Clear All)
 
@@ -33,18 +33,25 @@ clr_; ce_ 0; bl_ 1;
 # Application Helpers
 
 sub msg { my @m = split //,@_[0]; ch 3,$m[0]; ch 2,$m[1]; ch 1,$m[2]; ch 0,$m[3]; }
-# sub txt { my ($t) = @_; msg $t; }
+sub txt { my ($t) = @_; for my $i (0..45) { msg (substr $t, $i, 4); tz "_wait_100m" }}
 
-led 1;
-msg "Yowz";
-for my $b (0..7) { tz "40m"; bri $b; }
-led 0;
-sleep 1;
+# Blink-Fade Application
 
+# led 1;
+# msg "Yowz";
+# for my $b (0..7) { bri $b; tz "40m" }
+# led 0;
+# sleep 1;
 
-# while (1) {
-# 	msg `date +%M%S`;
-# 	sleep 1;
-# }
-#
-# txt "The quick brown fox jumped over the lazy dogs back 0123456789 ";
+# Scroll Application
+
+# txt "The quick brown fox jumped over the lazy dogs back   ";
+# sleep 30;
+
+# Clock Application
+
+while (1) {
+	msg `date +%M%S`;
+	sleep 1;
+}
+
