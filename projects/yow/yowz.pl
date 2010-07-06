@@ -6,7 +6,7 @@ use strict;
 open T, ">/dev/cu.usbmodem12341" or die($!);
 select T; $| = 1;
 select STDOUT; $| = 1;
-sub tz  { print "@_\n"; print T "@_\n" or die($!); }
+sub tz  { print T "@_\n" or die($!); }
 sub led { my ($led) = @_; tz "_led_ 6d $led o"; }
 
 # HDLx-2416 Pins
