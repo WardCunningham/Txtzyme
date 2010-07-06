@@ -348,8 +348,14 @@ int16_t usb_serial_getchar(void)
 		return -1;
 	}
 	UENUM = CDC_RX_ENDPOINT;
-	if (!(UEINTX & (1<<RWAL))) {
+	retry:
+	c = UEINTX;
+	if (!(c & (1<<RWAL))) {
 		// no data in buffer
+		if (c & (1<<RXOUTI)) {
+			UEINTX = 0x6B;
+			goto retry;
+		}
 		SREG = intr_state;
 		return -1;
 	}
@@ -362,15 +368,22 @@ int16_t usb_serial_getchar(void)
 }
 
 // number of bytes available in the receive buffer
+// special test for zero length buffers from osx
+
 uint8_t usb_serial_available(void)
 {
 	uint8_t n=0, intr_state;
+	uint8_t i;
 
 	intr_state = SREG;
 	cli();
 	if (usb_configuration) {
 		UENUM = CDC_RX_ENDPOINT;
 		n = UEBCLX;
+		if (!n) {
+			i = UEINTX;
+			if (i & (1 << RXOUTI) && ! (i & (1 << RWAL))) UEINTX = 0x6B;
+		}
 	}
 	SREG = intr_state;
 	return n;
