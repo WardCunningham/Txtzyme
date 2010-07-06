@@ -4,6 +4,8 @@ require 'haml'
 require 'sass'
 require 'json'
 
+enable :lock
+
 use Rack::Auth::Basic do |username, password|
  username == 'guest' && password == 'please'
 end
