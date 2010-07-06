@@ -29,29 +29,32 @@ sub bri { my ($bri) = @_; tz "_bri ${bri}_"; a 0; cue 0; cu_ 0; d $bri*8; wr_; }
 # Initialize (Clear All)
 
 clr_; ce_ 0; bl_ 1;
+led 0;
 
 # Application Helpers
 
 sub msg { my @m = split //,@_[0]; ch 3,$m[0]; ch 2,$m[1]; ch 1,$m[2]; ch 0,$m[3]; }
-sub txt { my ($t) = @_; for my $i (0..45) { msg (substr $t, $i, 4); tz "_wait_100m" }}
-
-# Blink-Fade Application
-
-# led 1;
-# msg "Yowz";
-# for my $b (0..7) { bri $b; tz "40m" }
-# led 0;
-# sleep 1;
-
-# Scroll Application
-
-# txt "The quick brown fox jumped over the lazy dogs back   ";
-# sleep 30;
-
-# Clock Application
+sub txt { my ($t) = @_; for my $i (0..55) { msg (substr $t, $i, 4); tz "_wait_100m" }}
 
 while (1) {
-	msg `date +%M%S`;
-	sleep 1;
-}
 
+	# Blink-Fade Application
+
+	for my $q (0..9) {
+		msg "Yow$q";
+		for my $b (0..7) { bri $b; tz "40m" }
+	}
+
+	# Scroll Application
+
+	txt "    The quick brown fox jumped over the lazy dogs back.                ";
+	txt "    Now is the time for all good men to come to Dorkbot.               ";
+
+	# Clock Application
+
+	for (1..40) {
+		msg `date +%M%S`;
+		for my $b (0..7) { bri $b; tz "40m" }
+		sleep 1;
+	}
+}
