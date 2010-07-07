@@ -53,6 +53,17 @@ helpers do
     sequence.collect{|i| [i, getz.to_i] }.to_json
   end
 
+  def avg prog
+    putz prog + "_done_"
+    result = []
+    while true do
+      value = getz
+      break if value == 'done'
+      result << value.to_f
+    end
+    result.inject() {|s, e| s + e} / result.length
+  end
+
 end
 
 get %r{/([b-f])/([0-7])} do |port, pin|
@@ -78,6 +89,10 @@ end
 
 put '/slide' do
   dict "6d0o35{5d1o#{params[:state]}u0o20m}6d1o"
+end
+
+get '/ss' do
+  { :mpx4250 => avg("100{6sp150u}") }.to_json
 end
 
 get '/' do
