@@ -92,7 +92,7 @@ put '/slide' do
 end
 
 get '/ss' do
-  { :mpx4250 => avg("20{6sp50u}") }.to_json
+  { :mpx4250 => avg("100{6sp150u}") }.to_json
 end
 
 get '/' do
