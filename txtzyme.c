@@ -21,6 +21,11 @@
  * THE SOFTWARE.
  */
 
+/* Contributions
+ *	x -- hex input, Alan Page
+ *	S -- SPI, Alan Page
+ */
+
 #include <avr/io.h>
 #include <avr/pgmspace.h>
 #include <stdint.h>
@@ -158,10 +163,10 @@ void parse(const char *buf) {
 			case 'D':
 			case 'E':
 			case 'F':
-	                    	x = ch - '0';
-        	        	while (*buf >= '0' && *buf <= '9') {
-                	        	x = x*10 + (*buf++ - '0');
-                   	 	}
+				x = ch - '0';
+				while (*buf >= '0' && *buf <= '9') {
+					x = x*10 + (*buf++ - '0');
+				}
 				break;
 			case 'p':
 				send_num(x);
@@ -218,46 +223,43 @@ void parse(const char *buf) {
 				x = analogRead(x);
 				break;
 			case 'x':
-	                    	x = 0;
-        	        	while ( (*buf >= '0' && *buf <= '9') || (*buf >='A' && *buf <='F') ) {
-                	        	if (*buf >= '0' && *buf <= '9') x = x*16 + (*buf++ - '0');
+				x = 0;
+				while ( (*buf >= '0' && *buf <= '9') || (*buf >='A' && *buf <='F') ) {
+					if (*buf >= '0' && *buf <= '9') x = x*16 + (*buf++ - '0');
 					else x = x*16 + (*buf++ - 55);
-                   	 	}
-		                break;
-            		case 'S':
-                		if ( (x==9999) || (x==0x9999) ) {       //disable SPI port
-                    		SPCR = 0;
-                    		break;
-                		}
-                		if (x > 8999) {				//this can catch 9000+config and 0x9000+config
-                    			DDRB |= (1<<PORTB2);            //MOSI output
-                    			DDRB &= ~(1<<PORTB3);           //MISO input  these pins valid for Teensy 2.0 and Teensy++ 2.0
-                    			DDRB |= (1<<PORTB1);            //SCLK output
-                    			DDRB |= (1<<PORTB0);            //SS output (safer as output, needs to be high if an input)
-
-                    			x = (x & 0x0007);               //keep only lowest three bits
-                    			if (x > 3) x = 8 + (x & 0x0003);//move the direction bit one higher
+				}
+				break;
+			case 'S':
+				if ( (x==9999) || (x==0x9999) ) {	//disable SPI port
+					SPCR = 0;
+					break;
+				}
+				if (x > 8999) {						//this can catch 9000+config and 0x9000+config
+					DDRB |= (1<<PORTB2);			//MOSI output
+					DDRB &= ~(1<<PORTB3);			//MISO input  these pins valid for Teensy 2.0 and Teensy++ 2.0
+					DDRB |= (1<<PORTB1);			//SCLK output
+					DDRB |= (1<<PORTB0);			//SS output (safer as output, needs to be high if an input)
+					x = (x & 0x0007);               //keep only lowest three bits
+					if (x > 3) x = 8 + (x & 0x0003);//move the direction bit one higher
 					x = 0x53 + (int8_t) (x << 2);
-                    			SPCR = x;
-                    			SPSR = 0;
-                    			break;
-                		}
-                		if (x > 255) {				//this can catch 256+data and 0x100+data
-					if ( !(SPCR & SPE)) break;	//make sure SPI is enabled
-                    			x = x & 0x00FF;
-                    			SPDR = (int8_t)x;		//send data out SPI
-                    			while (!(SPSR & (1<<SPIF)));	//wait for it to go out
-                    			x = SPDR;			//put returned data in x
-                    			break;
-                		}
-                		if (x < 256) {
-					if ( !(SPCR & SPE)) break;	//make sure SPI is enabled
-                    			SPDR = (int8_t)x;		//send data out SPI
-                    			while (!(SPSR & (1<<SPIF)));	//wait for it to go out
-                    			break;
-                		}
+					SPCR = x;
+					SPSR = 0;
+					break;
+				}
+				if (x > 255) {						//this can catch 256+data and 0x100+data
+					if ( !(SPCR & SPE)) break;		//make sure SPI is enabled
+					x = x & 0x00FF;
+					SPDR = (int8_t)x;				//send data out SPI
+					while (!(SPSR & (1<<SPIF)));	//wait for it to go out
+					x = SPDR;						//put returned data in x
+					break;
+				}
+				if (x < 256) {
+					if ( !(SPCR & SPE)) break;		//make sure SPI is enabled
+					SPDR = (int8_t)x;				//send data out SPI
+					while (!(SPSR & (1<<SPIF)));	//wait for it to go out
+					break;
+				}
 		}
 	}
 }
-
-
