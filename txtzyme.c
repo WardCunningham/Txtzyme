@@ -33,9 +33,6 @@
 #define LED_ON		(PORTD |= (1<<6))
 #define CPU_PRESCALE(n) (CLKPR = 0x80, CLKPR = (n))
 
-#define INPUT_MODE_DEC 0
-#define INPUT_MODE_HEX 1
-
 void send_str(const char *s);
 uint8_t recv_str(char *buf, uint8_t size);
 void parse(const char *buf);
@@ -138,7 +135,6 @@ uint8_t recv_str(char *buf, uint8_t size) {
 uint8_t port = 'd'-'a';
 uint8_t pin = 6;
 uint16_t x = 0;
-uint8_t input_mode = 0;
 
 void parse(const char *buf) {
 	uint16_t count = 0;
@@ -162,25 +158,10 @@ void parse(const char *buf) {
 			case 'D':
 			case 'E':
 			case 'F':
-                if (input_mode == INPUT_MODE_DEC) {
-                    if ( ch > '9' ) {                   //make sure we have a decimal number
-                        x = 0;                          //fail with a known output
-                        break;
-                    }
-                    x = ch - '0';
-                    while (*buf >= '0' && *buf <= '9') {
-                        x = x*10 + (*buf++ - '0');
-                    }
-                }
-                if (input_mode == INPUT_MODE_HEX) {
-                    if ( ch < 'A' ) x = ch - '0';
-                    else x = ch - 55;                   // 'A'=65 but it need to be equal 10
-                    while ( (*buf >= '0' && *buf <= '9') || (*buf >= 'A' && *buf <= 'F') ) {
-                        if ( *buf < 'A' ) x = x*16 + (*buf++ - '0');
-                        else x = x*16 + (*buf++ - 55);
-                    }
-                    input_mode = INPUT_MODE_DEC;
-                }
+	                    	x = ch - '0';
+        	        	while (*buf >= '0' && *buf <= '9') {
+                	        	x = x*10 + (*buf++ - '0');
+                   	 	}
 				break;
 			case 'p':
 				send_num(x);
@@ -236,38 +217,45 @@ void parse(const char *buf) {
 			case 's':
 				x = analogRead(x);
 				break;
-            case 'x':
-                if (x == 0) input_mode = INPUT_MODE_HEX;
-                break;
-            case 'S':
-                if ( (x==9999) || (x==0x9999) ) {       //disable SPI port
-                    SPCR = 0;
-                    break;
-                }
-                if (x > 8999) {                         //this can catch 9000+config and 0x9000+config
-                    DDRB |= (1<<PORTB2);                // MOSI output
-                    DDRB &= ~(1<<PORTB3);               // MISO input  these pins valid for Teensy 2.0 and Teensy++ 2.0
-                    DDRB |= (1<<PORTB1);                // SCLK output
-                    DDRB |= (1<<PORTB0);                // SS output (safer as output, needs to be high if an input)
+			case 'x':
+	                    	x = 0;
+        	        	while ( (*buf >= '0' && *buf <= '9') || (*buf >='A' && *buf <='F') ) {
+                	        	if (*buf >= '0' && *buf <= '9') x = x*16 + (*buf++ - '0');
+					else x = x*16 + (*buf++ - 55);
+                   	 	}
+		                break;
+            		case 'S':
+                		if ( (x==9999) || (x==0x9999) ) {       //disable SPI port
+                    		SPCR = 0;
+                    		break;
+                		}
+                		if (x > 8999) {				//this can catch 9000+config and 0x9000+config
+                    			DDRB |= (1<<PORTB2);            //MOSI output
+                    			DDRB &= ~(1<<PORTB3);           //MISO input  these pins valid for Teensy 2.0 and Teensy++ 2.0
+                    			DDRB |= (1<<PORTB1);            //SCLK output
+                    			DDRB |= (1<<PORTB0);            //SS output (safer as output, needs to be high if an input)
 
-                    x = (x & 0x0007);                   //keep only lowest three bits
-                    if (x > 3) x = 8 + (x & 0x0003);    //move the direction bit one higher
-                    SPCR = 0x53 + (int8_t) (x << 2);
-                    SPSR = 0;
-                    break;
-                }
-                if (x > 255) {                         //this can catch 256+data and 0x100+data
-                    x = x & 0x00FF;
-                    SPDR = (int8_t)x;
-                    while (!(SPSR & (1<<SPIF)));
-                    x = SPDR;
-                    break;
-                }
-                if (x < 256) {
-                    SPDR = (int8_t)x;
-                    while (!(SPSR & (1<<SPIF)));
-                    break;
-                }
+                    			x = (x & 0x0007);               //keep only lowest three bits
+                    			if (x > 3) x = 8 + (x & 0x0003);//move the direction bit one higher
+					x = 0x53 + (int8_t) (x << 2);
+                    			SPCR = x;
+                    			SPSR = 0;
+                    			break;
+                		}
+                		if (x > 255) {				//this can catch 256+data and 0x100+data
+					if ( !(SPCR & SPE)) break;	//make sure SPI is enabled
+                    			x = x & 0x00FF;
+                    			SPDR = (int8_t)x;		//send data out SPI
+                    			while (!(SPSR & (1<<SPIF)));	//wait for it to go out
+                    			x = SPDR;			//put returned data in x
+                    			break;
+                		}
+                		if (x < 256) {
+					if ( !(SPCR & SPE)) break;	//make sure SPI is enabled
+                    			SPDR = (int8_t)x;		//send data out SPI
+                    			while (!(SPSR & (1<<SPIF)));	//wait for it to go out
+                    			break;
+                		}
 		}
 	}
 }
