@@ -60,6 +60,11 @@ The underscore was chosen over single or double quotes for the simple reason tha
 
 Input is referenced to vcc and ranges from 0 to 1023. Teensy mux channels correspond to pins in the order they appear on the edge of the board: F0, F1, F4, F5, F6, F7, B6, B5, B4, D7, D6, D4. Any operation of the LED is likely to interfere with using D6 as an analog input.
 
+- `x` replaces x with the 16-bit unsigned integer formed by subsequent hex digits (0-9, A-F)
+- `S` communicate over SPI port, options in x
+
+9000S or 0x9000S is the base address for setting up the SPI, then add on 0-7 depending on the SPI mode and MSB/LSB first. 9999S or 0x9999S will disable the SPI. 255S or 0xFFS will send out FF over SPI. 511S or 0x1FF will send FF out and read back in from the SPI. display the result with p
+
 
 Learn More
 ----------
