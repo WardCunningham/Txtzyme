@@ -157,12 +157,6 @@ void parse(const char *buf) {
 			case '7':
 			case '8':
 			case '9':
-			case 'A':
-			case 'B':
-			case 'C':
-			case 'D':
-			case 'E':
-			case 'F':
 				x = ch - '0';
 				while (*buf >= '0' && *buf <= '9') {
 					x = x*10 + (*buf++ - '0');
