@@ -33,6 +33,9 @@
 #define LED_ON		(PORTD |= (1<<6))
 #define CPU_PRESCALE(n) (CLKPR = 0x80, CLKPR = (n))
 
+#define INPUT_MODE_DEC 0
+#define INPUT_MODE_HEX 1
+
 void send_str(const char *s);
 uint8_t recv_str(char *buf, uint8_t size);
 void parse(const char *buf);
@@ -93,7 +96,7 @@ void send_num(const uint16_t num) {
 		send_num(num/10);
 	}
 	usb_serial_putchar('0' + num%10);
-}		
+}
 
 // Receive a string from the USB serial port.  The string is stored
 // in the buffer and this function will not exceed the buffer size.
@@ -135,6 +138,7 @@ uint8_t recv_str(char *buf, uint8_t size) {
 uint8_t port = 'd'-'a';
 uint8_t pin = 6;
 uint16_t x = 0;
+uint8_t input_mode = 0;
 
 void parse(const char *buf) {
 	uint16_t count = 0;
@@ -152,10 +156,31 @@ void parse(const char *buf) {
 			case '7':
 			case '8':
 			case '9':
-				x = ch - '0';
-				while (*buf >= '0' && *buf <= '9') {
-					x = x*10 + (*buf++ - '0');
-				}
+			case 'A':
+			case 'B':
+			case 'C':
+			case 'D':
+			case 'E':
+			case 'F':
+                if (input_mode == INPUT_MODE_DEC) {
+                    if ( ch > '9' ) {                   //make sure we have a decimal number
+                        x = 0;                          //fail with a known output
+                        break;
+                    }
+                    x = ch - '0';
+                    while (*buf >= '0' && *buf <= '9') {
+                        x = x*10 + (*buf++ - '0');
+                    }
+                }
+                if (input_mode == INPUT_MODE_HEX) {
+                    if ( ch < 'A' ) x = ch - '0';
+                    else x = ch - 55;                   // 'A'=65 but it need to be equal 10
+                    while ( (*buf >= '0' && *buf <= '9') || (*buf >= 'A' && *buf <= 'F') ) {
+                        if ( *buf < 'A' ) x = x*16 + (*buf++ - '0');
+                        else x = x*16 + (*buf++ - 55);
+                    }
+                    input_mode = INPUT_MODE_DEC;
+                }
 				break;
 			case 'p':
 				send_num(x);
@@ -211,6 +236,38 @@ void parse(const char *buf) {
 			case 's':
 				x = analogRead(x);
 				break;
+            case 'x':
+                if (x == 0) input_mode = INPUT_MODE_HEX;
+                break;
+            case 'S':
+                if ( (x==9999) || (x==0x9999) ) {       //disable SPI port
+                    SPCR = 0;
+                    break;
+                }
+                if (x > 8999) {                         //this can catch 9000+config and 0x9000+config
+                    DDRB |= (1<<PORTB2);                // MOSI output
+                    DDRB &= ~(1<<PORTB3);               // MISO input  these pins valid for Teensy 2.0 and Teensy++ 2.0
+                    DDRB |= (1<<PORTB1);                // SCLK output
+                    DDRB |= (1<<PORTB0);                // SS output (safer as output, needs to be high if an input)
+
+                    x = (x & 0x0007);                   //keep only lowest three bits
+                    if (x > 3) x = 8 + (x & 0x0003);    //move the direction bit one higher
+                    SPCR = 0x53 + (int8_t) (x << 2);
+                    SPSR = 0;
+                    break;
+                }
+                if (x > 255) {                         //this can catch 256+data and 0x100+data
+                    x = x & 0x00FF;
+                    SPDR = (int8_t)x;
+                    while (!(SPSR & (1<<SPIF)));
+                    x = SPDR;
+                    break;
+                }
+                if (x < 256) {
+                    SPDR = (int8_t)x;
+                    while (!(SPSR & (1<<SPIF)));
+                    break;
+                }
 		}
 	}
 }
