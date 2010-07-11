@@ -211,6 +211,12 @@ void parse(const char *buf) {
 			case 's':
 				x = analogRead(x);
 				break;
+			case 'v':
+				#define QUOTEME_(x) #x
+				#define QUOTEME(x) QUOTEME_(x)
+				send_str(PSTR(QUOTEME(MCU)));
+				send_str(PSTR("\r\n"));
+				break;
 		}
 	}
 }
