@@ -33,10 +33,11 @@ if ($version eq 'at90usb1286') {
 
 @all = (@top, @mid_top, @mid_bot, @bot);
 
-# Blink on logic 1 input
+# Blink on input logic 1
 while (1) {
 	for (@all) { putz $_, "io{1o}" }
 	putz "100m";
 	for (@all) { putz $_, "io{0o}" }
 	putz "100m";
+	print getz "_._";
 }
