@@ -5,11 +5,11 @@ select T; $| = 1;
 select STDOUT; $| = 1;
 
 # Read and Write Txtzyme
-sub putz { print T map "$_\n", @_ or die($!) }
-sub getz { putz @_; $_ = <T>; s/\r?\n?$//; $_ }
+sub putz { local $_; print T map "$_\n", @_ or die($!) }
+sub getz { local $_; putz @_; $_ = <T>; $_ =~ s/\r?\n?$//; $_ }
 
 # Sync up with Txtzyme
-putz "_ok_"; getz until /ok/;
+putz "_ok_"; $_ = getz until /ok/;
 print "running\n";
 
 $version = getz "v";
