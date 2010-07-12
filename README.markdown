@@ -60,6 +60,15 @@ The underscore was chosen over single or double quotes for the simple reason tha
 
 Input is referenced to vcc and ranges from 0 to 1023. Teensy mux channels correspond to pins in the order they appear on the edge of the board: F0, F1, F4, F5, F6, F7, B6, B5, B4, D7, D6, D4. Any operation of the LED is likely to interfere with using D6 as an analog input.
 
+- `v` outputs the MCU version, as set by, for example, `MCU = atmega32u4` in the Makefile.
+
+Each Teensy uses a different MCU as follows: at90usb162: Teensy 1.0, atmega32u4: Teensy 2.0, at90usb646: Teensy++ 1.0, at90usb1286: Teensy++ 2.0.
+
+- `h` outputs a summary of available commands.
+
+Each command is listed with a signature indicating pre and post conditions and followed with a word or two of description. Command signatures and descriptions will not be change unless the commands themselves change so that drivers can sense remote capability by parsing this output.
+
+
 
 Learn More
 ----------
