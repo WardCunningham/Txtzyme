@@ -1,6 +1,7 @@
 
 # Open unbuffered bidirectional serial Teensy connection
-open T, '+</dev/cu.usbmodem12341' or die($!);
+$t = $ARGV[0]||'/dev/cu.usbmodem12341';
+open T, "+<$t" or die($!);
 select T; $| = 1;
 select STDOUT; $| = 1;
 
@@ -10,7 +11,7 @@ sub getz { local $_; putz @_; $_ = <T>; $_ =~ s/\r?\n?$//; $_ }
 
 # Sync up with Txtzyme
 putz "_ok_"; $_ = getz until /ok/;
-print "running\n";
+print "running $t\n";
 
 $version = getz "v";
 print "detected $version\n";
