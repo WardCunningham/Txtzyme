@@ -9,18 +9,29 @@ One often *echos* commands from the host's shell to the Teensy's USB device file
 
         $ echo '5{ 6d 1o 100m 0o 100m }' >/dev/cu.usbmodem12341
 
-Txtzyme is distributed as source on GitHub. One is expected to fork this repo for each project that requires new commands in the interpreter.
 
 Getting Started
 ---------------
 
 Txtzyme runs on Teensy and Teensy++ versions 1.0 and 2.0. These devices are available, inexpensive and well supported by <http://pjrc.com/teensy>. Once you are in possession of a device you will need to:
 
-- Download Txtzyme from <http://github.com/WardCunningham/Txtzyme>
-- Download the AVR cross compiler from <http://www.obdev.at/products/crosspack/download.html>
 - Download the Teensy loader from <http://pjrc.com/teensy/loader.html>
+- Download Txtzyme hex from <http://github.com/WardCunningham/Txtzyme/tree/master/hex/>
 
-Each of these sites have useful instructions. Once Txtzyme is running you can send commands to it from the shell as above or try any of the examples in the projects directory.
+Choose the hex file that corresponds to your Teensy.
+(The loader will check that you chose correctly.)
+Once Txtzyme is running you can send commands to it from the shell as above or try any of the examples in the projects directory.
+
+Txtzyme is distributed as source on GitHub.
+To build a custom Txtzyme you will need to:
+
+- Download Txtzyme source from <http://github.com/WardCunningham/Txtzyme>
+- Download the AVR cross compiler from <http://www.obdev.at/products/crosspack/download.html>
+
+You are encouraged to add commands that make your projects easier.
+We'd like to hear about what you've done.
+Fork the Txtzyme repo to share versions of Txtzyme you've found useful.
+
 
 Standard Commands
 -----------------
