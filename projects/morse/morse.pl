@@ -1,6 +1,10 @@
+
+# Start with ASCII Message
+
 $_ = 'THE QUICK BROWN FOX JUMPED OVER THE LAZY DOGS BACK';
 
-s/\w/_\l$&_\n$&/g;
+# Convert ASCII to Morse Code
+
 s/A/.- /g;
 s/B/-... /g;
 s/C/-.-. /g;
@@ -28,11 +32,14 @@ s/X/-..- /g;
 s/Y/-.-- /g;
 s/Z/--.. /g;
 
-s/ /mmm\n/g;
-s/mmm\nmmm/_ _\n$&/g;
+# Convert Morse Code to Txtzyme
+
 s/\./25{1mom0o}50m\n/g;
 s/\-/75{1mom0o}50m\n/g;
+s/ /mmm\n/g;
 print;
+
+# Send Txtzyme to Teensy
 
 `echo '$_' >/dev/cu.usbmodem12341`;
 
