@@ -16,6 +16,11 @@ end
 
 before do
   content_type "application/json"
+  putz "6d0o"
+end
+
+after do
+  putz "6d1o"
 end
 
 helpers do
@@ -79,7 +84,7 @@ get %r{/ch/([0-9])} do |ch|
 end
 
 get %r{/fft/([0-9])} do |ch|
-  putz "#{N}{#{ch}sp50u}"
+  putz "#{N}{#{ch}sp50u7b1o0o}"
   f = (0..(N-1)).collect{|i| getz.to_f}
   mean = (f.inject(0){|s,e|s+e})/N
   f = f.collect{|y| y-mean }
@@ -88,7 +93,7 @@ get %r{/fft/([0-9])} do |ch|
 end
 
 put '/slide' do
-  dict "6d0o35{5d1o#{params[:state]}u0o20m}6d1o"
+  dict "35{5d1o#{params[:state]}u0o20m}"
 end
 
 get '/ss' do
