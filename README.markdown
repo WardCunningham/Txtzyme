@@ -9,18 +9,29 @@ One often *echos* commands from the host's shell to the Teensy's USB device file
 
         $ echo '5{ 6d 1o 100m 0o 100m }' >/dev/cu.usbmodem12341
 
-Txtzyme is distributed as source on GitHub. One is expected to fork this repo for each project that requires new commands in the interpreter.
 
 Getting Started
 ---------------
 
 Txtzyme runs on Teensy and Teensy++ versions 1.0 and 2.0. These devices are available, inexpensive and well supported by <http://pjrc.com/teensy>. Once you are in possession of a device you will need to:
 
-- Download Txtzyme from <http://github.com/WardCunningham/Txtzyme>
-- Download the AVR cross compiler from <http://www.obdev.at/products/crosspack/download.html>
 - Download the Teensy loader from <http://pjrc.com/teensy/loader.html>
+- Download Txtzyme hex from <http://github.com/WardCunningham/Txtzyme/tree/master/hex/>
 
-Each of these sites have useful instructions. Once Txtzyme is running you can send commands to it from the shell as above or try any of the examples in the projects directory.
+Choose the hex file that corresponds to your Teensy.
+(The loader will check that you chose correctly.)
+Once Txtzyme is running you can send commands to it from the shell as above or try any of the examples in the projects directory.
+
+Txtzyme is distributed as source on GitHub.
+To build a custom Txtzyme you will need to:
+
+- Download Txtzyme source from <http://github.com/WardCunningham/Txtzyme>
+- Download the AVR cross compiler from <http://www.obdev.at/products/crosspack/download.html>
+
+You are encouraged to add commands that make your projects easier.
+We'd like to hear about what you've done.
+Fork the Txtzyme repo to share versions of Txtzyme you've found useful.
+
 
 Standard Commands
 -----------------
@@ -59,6 +70,15 @@ The underscore was chosen over single or double quotes for the simple reason tha
 - `s` samples analog input from mux channel x, replacing x with the sampled data.
 
 Input is referenced to vcc and ranges from 0 to 1023. Teensy mux channels correspond to pins in the order they appear on the edge of the board: F0, F1, F4, F5, F6, F7, B6, B5, B4, D7, D6, D4. Any operation of the LED is likely to interfere with using D6 as an analog input.
+
+- `v` outputs the MCU version, as set by, for example, `MCU = atmega32u4` in the Makefile.
+
+Each Teensy uses a different MCU as follows: at90usb162: Teensy 1.0, atmega32u4: Teensy 2.0, at90usb646: Teensy++ 1.0, at90usb1286: Teensy++ 2.0.
+
+- `h` outputs a summary of available commands.
+
+Each command is listed with a signature indicating pre and post conditions and followed with a word or two of description. Command signatures and descriptions will not be change unless the commands themselves change so that drivers can sense remote capability by parsing this output.
+
 
 
 Learn More

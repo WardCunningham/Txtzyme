@@ -6,7 +6,11 @@
 #include "analog.h"
 
 
+#if defined(__AVR_ATmega32U4__) || defined(__AVR_AT90USB646__) || defined(__AVR_AT90USB1286__)
 static uint8_t aref = (1<<REFS0); // default to AREF = Vcc
+#else
+static uint8_t aref = 0;
+#endif
 
 
 void analogReference(uint8_t mode)

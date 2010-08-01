@@ -211,6 +211,15 @@ void parse(const char *buf) {
 			case 's':
 				x = analogRead(x);
 				break;
+			case 'v':
+				#define QUOTEME_(x) #x
+				#define QUOTEME(x) QUOTEME_(x)
+				send_str(PSTR(QUOTEME(MCU)));
+				send_str(PSTR("\r\n"));
+				break;
+			case 'h':
+				send_str(PSTR("0-9<num>\tenter number\r\n<num>p\t\tprint number\r\n<num>a-f<pin>\tselect pin\r\n<pin>i<num>\tinput\r\n<pin><num>o\toutput\r\n<num>m\t\tmsec delay\r\n<num>u\t\tusec delay\r\n<num>{}\t\trepeat\r\nk<num>\t\tloop count\r\n_<words>_\tprint words\r\n<num>s<num>\tanalog sample\r\nv\t\tprint version\r\nh\t\tprint help\r\n"));
+				break;
 		}
 	}
 }
