@@ -30,7 +30,8 @@ helpers do
     puts "\033[32m#{string}\033[0m"
   end
 
-  def getz
+  def getz string = nil
+    putz string if string
     $tz.gets.chomp
   end
 
@@ -59,6 +60,7 @@ helpers do
   end
 
   def avg prog
+    sync
     putz prog + "_done_"
     result = []
     while true do
@@ -67,6 +69,18 @@ helpers do
       result << value.to_f
     end
     result.inject() {|s, e| s + e} / result.length
+  end
+
+  def text prog
+    sync
+    putz prog + "_endoftext_"
+    result = ''
+    while true do
+      value = getz
+      break if value == 'endoftext'
+      result << value << "\n"
+    end
+    result
   end
 
 end
@@ -98,6 +112,10 @@ end
 
 get '/ss' do
   { :mpx4250 => avg("100{6sp150u}") }.to_json
+end
+
+get '/mcu' do
+  { :version => getz("v"), :help => text("h") }.to_json
 end
 
 get '/' do
