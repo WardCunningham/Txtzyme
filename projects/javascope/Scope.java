@@ -9,9 +9,12 @@ public class Scope extends JApplet {
 
 	public static String line = "";
 	public static java.util.List<Integer> results = new ArrayList<Integer>(5000);
+	public static int max = 1024;
 
 	public static void main(String[] args) throws InterruptedException {
 		ScopePanel scopePanel = new ScopePanel();
+
+		try { max = new Integer(args[0]); } catch (Exception e) { }
 
 		JFrame f = new JFrame("Txtzyme Javascope");
 		f.addWindowListener(new WindowAdapter() {
@@ -97,6 +100,8 @@ class ScopePanel extends JPanel implements Runnable {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g); //paint background
 
+		int height = getBounds().height-5;
+
 		g.setColor(Color.gray);
 		g.drawString(Scope.line, 20, 15);
 
@@ -113,9 +118,9 @@ class ScopePanel extends JPanel implements Runnable {
 				Object results[] = Scope.results.toArray();
 
 				Path2D polyline =  new Path2D.Float(GeneralPath.WIND_EVEN_ODD, results.length);
-				polyline.moveTo (0, ((Integer)results[0]).intValue()/2);
+				polyline.moveTo (0, height - ((Integer)results[0]).intValue()*height/Scope.max);
 				for (int index = 1; index < results.length; index++) {
-				 	 polyline.lineTo(index*3, ((Integer)results[index]).intValue()/2);
+				 	 polyline.lineTo(index*3, height - ((Integer)results[index]).intValue()*height/Scope.max);
 				};
 
 				Graphics2D g2 = (Graphics2D) g;
