@@ -53,3 +53,28 @@ This uses the parallax suggested temperature comphensated speed of sound substit
 Show that, save for one sample, the data varies less than a millimeter:
 
 (19595 - 19588) * 9 / (16 MHz) * (331.5 + 0.6 * 25) m/sec / 2 in mm = 0.682171875 millimeters
+
+Addendum
+--------
+
+Further exploration of the measurement stats indicates multiple peaks, spaced 4 to 5 units appart. This is made more visible by drawing a bar for each sample value, including those with zero counts. This is the sort of results we now get:
+
+2	8494	||
+9	8495	|||||||||
+14	8496	||||||||||||||
+32	8497	||||||||||||||||||||||||||||||||
+2	8498	||
+2	8499	||
+46	8500	||||||||||||||||||||||||||||||||||||||||||||||
+50	8501	||||||||||||||||||||||||||||||||||||||||||||||||||
+98	8502	||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+11	8503	|||||||||||
+1	8504	|
+4	8505	||||
+8	8506	||||||||
+11	8507	|||||||||||
+1	8508	|
+
+We don't see multiple peaks when we point the sensor into empty space and let it return the maximal pulse. This indicates the multiple peaks are an artifact of the sensor, not our timing measurement.
+
+We note that the spacing between these peaks represents a frequency, 1 / (delta period), of around 400 KHz, 10 times the 40KHz chirp frequency of the sensor.
