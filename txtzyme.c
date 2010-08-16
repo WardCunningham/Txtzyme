@@ -218,7 +218,23 @@ void parse(const char *buf) {
 				send_str(PSTR("\r\n"));
 				break;
 			case 'h':
-				send_str(PSTR("0-9<num>\tenter number\r\n<num>p\t\tprint number\r\n<num>a-f<pin>\tselect pin\r\n<pin>i<num>\tinput\r\n<pin><num>o\toutput\r\n<num>m\t\tmsec delay\r\n<num>u\t\tusec delay\r\n<num>{}\t\trepeat\r\nk<num>\t\tloop count\r\n_<words>_\tprint words\r\n<num>s<num>\tanalog sample\r\nv\t\tprint version\r\nh\t\tprint help\r\n"));
+				send_str(PSTR("0-9<num>\tenter number\r\n<num>p\t\tprint number\r\n<num>a-f<pin>\tselect pin\r\n<pin>i<num>\tinput\r\n<pin><num>o\toutput\r\n<num>m\t\tmsec delay\r\n<num>u\t\tusec delay\r\n<num>{}\t\trepeat\r\nk<num>\t\tloop count\r\n_<words>_\tprint words\r\n<num>s<num>\tanalog sample\r\nv\t\tprint version\r\nh\t\tprint help\r\n<pin>t<num>\tpulse width\r\n"));
+				break;
+			case 't':
+				*(uint8_t *)(0x21 + port * 3) &= ~(1 << pin);		// direction = input
+				{
+					uint8_t *tport = (uint8_t *)(0x20 + port * 3);
+					uint8_t tpin = 1 << pin;
+					uint8_t tstate = *tport & tpin;
+					x = 0;
+					while (++x) {
+						if ((*tport & tpin) != tstate) break;
+					}
+					if (!x) break;
+					while (++x) {
+						if ((*tport & tpin) == tstate) break;
+					}
+				}
 				break;
 		}
 	}
