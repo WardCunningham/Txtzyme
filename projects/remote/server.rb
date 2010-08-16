@@ -16,6 +16,11 @@ end
 
 before do
   content_type "application/json"
+  putz "6d0o"
+end
+
+after do
+  putz "6d1o"
 end
 
 helpers do
@@ -25,7 +30,8 @@ helpers do
     puts "\033[32m#{string}\033[0m"
   end
 
-  def getz
+  def getz string = nil
+    putz string if string
     $tz.gets.chomp
   end
 
@@ -54,6 +60,7 @@ helpers do
   end
 
   def avg prog
+    sync
     putz prog + "_done_"
     result = []
     while true do
@@ -62,6 +69,18 @@ helpers do
       result << value.to_f
     end
     result.inject() {|s, e| s + e} / result.length
+  end
+
+  def text prog
+    sync
+    putz prog + "_endoftext_"
+    result = ''
+    while true do
+      value = getz
+      break if value == 'endoftext'
+      result << value << "\n"
+    end
+    result
   end
 
 end
@@ -79,7 +98,7 @@ get %r{/ch/([0-9])} do |ch|
 end
 
 get %r{/fft/([0-9])} do |ch|
-  putz "#{N}{#{ch}sp50u}"
+  putz "#{N}{#{ch}sp50u7b1o0o}"
   f = (0..(N-1)).collect{|i| getz.to_f}
   mean = (f.inject(0){|s,e|s+e})/N
   f = f.collect{|y| y-mean }
@@ -88,11 +107,15 @@ get %r{/fft/([0-9])} do |ch|
 end
 
 put '/slide' do
-  dict "6d0o35{5d1o#{params[:state]}u0o20m}6d1o"
+  dict "35{5d1o#{params[:state]}u0o20m}"
 end
 
 get '/ss' do
   { :mpx4250 => avg("100{6sp150u}") }.to_json
+end
+
+get '/mcu' do
+  { :version => getz("v"), :help => text("h") }.to_json
 end
 
 get '/' do
