@@ -79,6 +79,10 @@ Each Teensy uses a different MCU as follows: at90usb162: Teensy 1.0, atmega32u4:
 
 Each command is listed with a signature indicating pre and post conditions and followed with a word or two of description. Command signatures and descriptions will not be change unless the commands themselves change so that drivers can sense remote capability by parsing this output.
 
+- `t` measure pulse width on selected pin
+
+Wait for two transitions on selected pin. Set x to exlapsed time between these transitions, or zero if wait for either transition overflows x (about 1/30 second). Time unit is clock period divided by nine (Millisconds = result * 9 / 16). 
+
 
 
 Learn More
