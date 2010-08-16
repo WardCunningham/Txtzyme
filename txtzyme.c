@@ -223,17 +223,19 @@ void parse(const char *buf) {
 			case 't':
 				*(uint8_t *)(0x21 + port * 3) &= ~(1 << pin);		// direction = input
 				{
-					uint8_t *tport = (uint8_t *)(0x20 + port * 3);
+					volatile uint8_t *tport = (uint8_t *)(0x20 + port * 3);
 					uint8_t tpin = 1 << pin;
 					uint8_t tstate = *tport & tpin;
-					x = 0;
-					while (++x) {
+					uint16_t tcount = 0;
+					while (++tcount) {
 						if ((*tport & tpin) != tstate) break;
 					}
-					if (!x) break;
-					while (++x) {
+					x = tcount;
+					if (!tcount) break;
+					while (++tcount) {
 						if ((*tport & tpin) == tstate) break;
 					}
+					x = tcount;
 				}
 				break;
 		}
