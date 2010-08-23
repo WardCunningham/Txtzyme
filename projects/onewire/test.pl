@@ -27,7 +27,7 @@ off;
 sub rst { getz "7f0o480ui60uip420u" }
 sub wr { putz $_[0] ? "7f0oi60u" : "7f0o60ui" }
 sub w8 { my ($b) = @_; for (0..7) { wr($b&1); $b /= 2; } }
-sub rd { getz "7f0oip45u" }
+sub rd { getz "7f0oiip45u" }
 sub r8 { my $b = 0; for (0..7) { $b |= (rd()<<$_) } return $b }
 
 # DS18B20 Thermometer
