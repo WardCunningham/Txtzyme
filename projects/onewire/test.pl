@@ -36,7 +36,7 @@ red;
 rst;
 w8 0xCC; # Skip ROM
 w8 0x44; # Convert Temp
-putz "750m";
+{} until rd;
 off;
 
 grn;
