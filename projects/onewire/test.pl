@@ -22,12 +22,13 @@ sub grn { putz "0b1o" }
 sub off { putz "1b0obo" }
 off;
 
-# One-Wire Protocol (on pin F7)
+# One-Wire Protocol (on pin F6, pwr F7, gnd F5)
 
-sub rst { getz "7f0o480ui60uip420u" }
-sub wr { putz $_[0] ? "7f0oi60u" : "7f0o60ui" }
+putz "7f1o5f0o";
+sub rst { getz "6f0o480ui60uip420u" }
+sub wr { putz $_[0] ? "6f0oi60u" : "6f0o60ui" }
 sub w8 { my ($b) = @_; for (0..7) { wr($b&1); $b /= 2; } }
-sub rd { getz "7f0oiip45u" }
+sub rd { getz "6f0oiip45u" }
 sub r8 { my $b = 0; for (0..7) { $b |= (rd()<<$_) } return $b }
 
 # DS18B20 Thermometer Functions
@@ -36,7 +37,7 @@ sub skip { w8 0xCC }
 sub cnvt { w8 0x44 }
 sub data { w8 0xBE }
 
-# DS18B20 Thermometer Transactions
+# DS18B20 Thermometer Transactions (single device)
 
 sub all_cnvt { rst; skip; cnvt; putz "750m" }
 sub one_cnvt { rst; skip; cnvt; {} until rd }
