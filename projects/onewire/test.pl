@@ -45,4 +45,15 @@ sub one_data { rst; skip; data; my $c = r8; $c += 256 * r8 }
 sub temp_c { all_cnvt; 0.0625 * one_data }
 sub temp_f { 32 + 1.8 * temp_c }
 
-printf "%3.5f c\n", temp_c;
+# Show rising (red) and falling (green) temps
+
+my ($old, $new) = (0, 0);
+while (1) {
+    ($old, $new) = ($new, temp_c());
+    printf "%3.5f c\n", $new;
+    off;
+    red if $new > $old;
+    grn if $old > $new;
+}
+
+
