@@ -30,21 +30,19 @@ sub w8 { my ($b) = @_; for (0..7) { wr($b&1); $b /= 2; } }
 sub rd { getz "7f0oiip45u" }
 sub r8 { my $b = 0; for (0..7) { $b |= (rd()<<$_) } return $b }
 
-# DS18B20 Thermometer
+# DS18B20 Thermometer Functions
 
-red;
-rst;
-w8 0xCC; # Skip ROM
-w8 0x44; # Convert Temp
-{} until rd;
-off;
+sub skip { w8 0xCC }
+sub cnvt { w8 0x44 }
+sub data { w8 0xBE }
 
-grn;
-rst;
-w8 0xCC; # Skip ROM
-w8 0xBE; # read Scratchpad
-my $c = r8; $c += 256 * r8;
-printf "%3.1f\n", 1.8 * $c / 16 + 32;
-off;
+# DS18B20 Thermometer Transactions
 
+sub all_cnvt { rst; skip; cnvt; putz "750m" }
+sub one_cnvt { rst; skip; cnvt; {} until rd }
+sub one_data { rst; skip; data; my $c = r8; $c += 256 * r8 }
 
+sub temp_c { all_cnvt; 0.0625 * one_data }
+sub temp_f { 32 + 1.8 * temp_c }
+
+printf "%3.5f c\n", temp_c;
