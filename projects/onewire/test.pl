@@ -62,9 +62,9 @@ do {
         my $lo = rd;
         my $hi = rd;
         push @pr, 2*!$hi+!$lo;
-        my $x = (scalar @st) ? shift @st : !$lo ? 0 : 1;
+        my $x = (scalar @st) ? shift @st : $lo;
         wr $x;
-        @nx = (@at,1) if $x == 0 && $hi == 0;
+        @nx = (@at,1) if !$x && !$hi;
         push @at, $x
     }
     @st = @nx;
