@@ -43,7 +43,7 @@ sub srom { w8 0xF0 }
 
 # DS18B20 Thermometer Transactions (single device)
 
-sub all_cnvt { rst; skip; cnvt; putz "750m" }
+sub all_cnvt { rst; skip; cnvt; getz "_ok_"; sleep 1 }
 sub one_cnvt { rst; skip; cnvt; {} until rd }
 sub one_data { rst; skip; data; my $c = r8; $c += 256 * r8 }
 
