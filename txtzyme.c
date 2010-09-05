@@ -32,14 +32,15 @@
 #define LED_OFF		(PORTD &= ~(1<<6))
 #define LED_ON		(PORTD |= (1<<6))
 #define CPU_PRESCALE(n) (CLKPR = 0x80, CLKPR = (n))
+#define BIGBUF      1024
 
 void send_str(const char *s);
-uint8_t recv_str(char *buf, uint8_t size);
+uint16_t recv_str(char *buf, uint16_t size);
 void parse(const char *buf);
 
 // Basic command interpreter for controlling port pins
 int main(void) {
-	char buf[64];
+	char buf[BIGBUF];
 	uint8_t n;
 
 	// set for 16 MHz clock, and turn on the LED
@@ -69,7 +70,7 @@ int main(void) {
 		while (1) {
 			// send_str(PSTR("> "));
 			n = recv_str(buf, sizeof(buf));
-			if (n == 255) break;
+			if (n == (uint16_t)(~0)) break;
 			// send_str(PSTR("\r\n"));
 			parse(buf);
 		}
@@ -102,9 +103,9 @@ void send_num(const uint16_t num) {
 // The return value is the number of characters received, or 255 if
 // the virtual serial connection was closed while waiting.
 //
-uint8_t recv_str(char *buf, uint8_t size) {
+uint16_t recv_str(char *buf, uint16_t size) {
 	int16_t r;
-	uint8_t count=0;
+	uint16_t count=0;
 
 	while (count < (size-1)) {
 		r = usb_serial_getchar();
@@ -120,7 +121,7 @@ uint8_t recv_str(char *buf, uint8_t size) {
 			  !(usb_serial_get_control() & USB_SERIAL_DTR)) {
 				// user no longer connected
 				*buf = 0;
-				return 255;
+				return ~0;
 			}
 			// just a normal timeout, keep waiting
 		}
@@ -138,7 +139,7 @@ uint16_t x = 0;
 
 void parse(const char *buf) {
 	uint16_t count = 0;
-	char *loop;
+	const char *loop = 0;
 	char ch;
 	while ((ch = *buf++)) {
 		switch (ch) {
@@ -218,7 +219,7 @@ void parse(const char *buf) {
 				send_str(PSTR("\r\n"));
 				break;
 			case 'h':
-				send_str(PSTR("0-9<num>\tenter number\r\n<num>p\t\tprint number\r\n<num>a-f<pin>\tselect pin\r\n<pin>i<num>\tinput\r\n<pin><num>o\toutput\r\n<num>m\t\tmsec delay\r\n<num>u\t\tusec delay\r\n<num>{}\t\trepeat\r\nk<num>\t\tloop count\r\n_<words>_\tprint words\r\n<num>s<num>\tanalog sample\r\nv\t\tprint version\r\nh\t\tprint help\r\n<pin>t<num>\tpulse width\r\n"));
+				send_str(PSTR("Txtzyme [+bigbuf]\r\n0-9<num>\tenter number\r\n<num>p\t\tprint number\r\n<num>a-f<pin>\tselect pin\r\n<pin>i<num>\tinput\r\n<pin><num>o\toutput\r\n<num>m\t\tmsec delay\r\n<num>u\t\tusec delay\r\n<num>{}\t\trepeat\r\nk<num>\t\tloop count\r\n_<words>_\tprint words\r\n<num>s<num>\tanalog sample\r\nv\t\tprint version\r\nh\t\tprint help\r\n<pin>t<num>\tpulse width\r\n"));
 				break;
 			case 't':
 				*(uint8_t *)(0x21 + port * 3) &= ~(1 << pin);		// direction = input
