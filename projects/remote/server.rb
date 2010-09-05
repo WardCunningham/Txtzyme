@@ -114,6 +114,10 @@ get '/ss' do
   { :mpx4250 => avg("100{6sp150u}") }.to_json
 end
 
+get '/ss/onewire' do
+  `perl ../onewire/sensors.pl`
+end
+
 get '/mcu' do
   { :version => getz("v"), :help => text("h") }.to_json
 end
