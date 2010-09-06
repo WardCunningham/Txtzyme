@@ -115,7 +115,7 @@ get '/ss' do
 end
 
 get '/ss/onewire' do
-  `perl ../onewire/sensors.pl`
+  `cd ../onewire; perl .//sensors.pl`
 end
 
 get '/mcu' do
