@@ -15,7 +15,7 @@ configure do
 end
 
 before do
-  content_type "application/json"
+  content_type "text/plain"
   putz "6d0o"
 end
 
@@ -131,6 +131,32 @@ get '/stylesheet.css' do
   content_type 'text/css'
   sass :stylesheet
 end
+
+get '/upload' do
+  content_type "text/html"
+  haml :upload
+end
+
+post '/upload' do
+  content_type "text/html"
+  unless params[:file] &&
+         (tmpfile = params[:file][:tempfile]) &&
+         (name = params[:file][:filename])
+    @error = "No file selected"
+    haml :upload
+  end
+  STDERR.puts "Uploading file, original name #{name.inspect}"
+  # while blk = tmpfile.read(65536)
+  #   File.open(path, "wb") { |f| f.write(tmpfile.read) }
+  #   # here you would write it to its final location
+  #   STDERR.puts blk.inspect
+  # end
+  path = File.join("public/files", name)
+  File.open(path, "wb") { |f| f.write(tmpfile.read) }
+  "Upload complete"
+end
+
+
 
 # http://juno.myjp.net/code/top.php
 
