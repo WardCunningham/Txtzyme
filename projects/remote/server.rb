@@ -111,7 +111,10 @@ put '/slide' do
 end
 
 get '/ss' do
-  { :mpx4250 => avg("100{6sp150u}") }.to_json
+  {
+    :mpx4250 => avg("100{6sp150u}"),
+    :a2011  => avg("100{1sp150u}"),
+  }.to_json
 end
 
 get '/ss/onewire' do
