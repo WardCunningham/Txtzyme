@@ -110,14 +110,18 @@ put '/slide' do
   dict "35{5d1o#{params[:state]}u0o20m}"
 end
 
+get '/hum/*' do |n|
+  avg("#{n}{4sp150u}").to_s
+end
+
 get '/ss' do
   {
-    :mpx4250 => avg("100{6sp150u}"),
-    :a2010  => avg("100{0sp150u}"),
-    :a2011  => avg("100{1sp150u}"),
-    :a2012  => avg("100{2sp150u}"),
-    :a2013  => avg("100{3sp150u}"),
-    :a2014  => avg("100{4sp150u}"),
+    :mpx4250 => avg("107{6sp150u}"),
+    :a2010  => avg("107{0sp150u}"),
+    :a2011  => avg("107{1sp150u}"),
+    :a2012  => avg("107{2sp150u}"),
+    :a2013  => avg("107{3sp150u}"),
+    :a2014  => avg("2133{4sp150u}"),
   }.to_json
 end
 
