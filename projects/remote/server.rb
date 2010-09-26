@@ -83,6 +83,21 @@ helpers do
     result
   end
 
+  def peak2rms prog
+    sync
+    putz prog + "_done_"
+    result = []
+    while true do
+      value = getz
+      break if value == 'done'
+      result << value.to_f
+    end
+    avg = result.inject() {|s, e| s + e} / result.length
+    rms = Math.sqrt(result.inject() {|s, e| s + (e - avg)**2} / result.length)
+    crest = (result.max - avg) / rms
+    crest / Math.sqrt(2)
+  end
+
 end
 
 get %r{/([b-f])/([0-7])} do |port, pin|
@@ -121,7 +136,7 @@ get '/ss' do
     :a2011  => avg("107{1sp150u}"),
     :a2012  => avg("107{2sp150u}"),
     :a2013  => avg("107{3sp150u}"),
-    :a2014  => avg("2133{4sp150u}"),
+    :a2014  => peak2rms("2133{4sp150u}"),
   }.to_json
 end
 
