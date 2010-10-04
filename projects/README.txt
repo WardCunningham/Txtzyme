@@ -11,4 +11,7 @@ Things to Try
 * Perlscope -- Perl program reads usb in background while user tries different programs.
 * Javascope -- Java program that reads and plots usb output in the background.
 * Blink -- Program randomly generates programs; reads data from user, logs and reports both.
-* Remote -- Sanatra (Ruby) application that serves access to local sensor network.
+* Remote -- Sinatra (Ruby) application that serves access to local sensor network.
+* Onewire -- Perl to find and query DS18B20 one-wire digital thermometers.
+* Yow -- Perl to light up an Avago HDLx-2416 Series four-character alphanumeric display.
+* Ping -- Shell scripts to exercise the #28015 Ultrasonic Distance Sensor.
