@@ -53,45 +53,31 @@ helpers do
     data.to_json
   end
 
-  def vect prog, sequence
-    sync
-    putz prog
-    sequence.collect{|i| [i, getz.to_i] }.to_json
-  end
-
-  def avg prog
+  def vect prog
     sync
     putz prog + "_done_"
     result = []
     while true do
       value = getz
       break if value == 'done'
-      result << value.to_f
-    end
-    result.inject() {|s, e| s + e} / result.length
-  end
-
-  def text prog
-    sync
-    putz prog + "_endoftext_"
-    result = ''
-    while true do
-      value = getz
-      break if value == 'endoftext'
-      result << value << "\n"
+      result << value
     end
     result
   end
 
+  def avg prog
+    result = vect(prog).map{|e| e.to_f}
+    result.inject() {|s, e| s+e} / result.length
+  end
+
+  def rms prog
+    result = vect(prog).map{|e| e.to_f}
+    avg = result.inject() {|s, e| s + e} / result.length
+    Math.sqrt(result.inject() {|s, e| s + (e - avg)**2} / result.length)
+  end
+
   def peak2rms prog
-    sync
-    putz prog + "_done_"
-    result = []
-    while true do
-      value = getz
-      break if value == 'done'
-      result << value.to_f
-    end
+    result = vect(prog).map{|e| e.to_f}
     avg = result.inject() {|s, e| s + e} / result.length
     rms = Math.sqrt(result.inject() {|s, e| s + (e - avg)**2} / result.length)
     crest = (result.max - avg) / rms
@@ -109,7 +95,8 @@ put %r{/([b-f])/([0-7])} do |port, pin|
 end
 
 get %r{/ch/([0-9])} do |ch|
-  vect "101{#{ch}sp50u}", (0..100).map{|i|i*50}
+  i = 0
+  vect("101{#{ch}sp50u}").map{|v| i+=50; [i-50, v.to_i]}.to_json
 end
 
 get %r{/fft/([0-9])} do |ch|
@@ -129,6 +116,10 @@ get '/hum/*' do |n|
   avg("#{n}{4sp150u}").to_s
 end
 
+get '/rms/*' do |n|
+  rms("#{n}{4sp150u}").to_s
+end
+
 get '/ss' do
   {
     :mpx4250 => avg("107{6sp150u}"),
@@ -137,6 +128,7 @@ get '/ss' do
     :a2012  => avg("107{2sp150u}"),
     :a2013  => avg("107{3sp150u}"),
     :a2014  => peak2rms("2133{4sp150u}"),
+    :acrms  => rms("2133{4sp150u}"),
   }.to_json
 end
 
@@ -145,7 +137,7 @@ get '/ss/onewire' do
 end
 
 get '/mcu' do
-  { :version => getz("v"), :help => text("h") }.to_json
+  { :version => getz("v"), :help => vect("h") }.to_json
 end
 
 get '/' do
