@@ -193,7 +193,7 @@ void parse(const char *buf) {
 				break;
 			case 'u': {
 				uint16_t now;
-				uint16_t delta = x<<2;
+				uint16_t delta = x*2;
 				do { now = TCNT1; } while (now-last < delta);
 				last = now;
 				break;
