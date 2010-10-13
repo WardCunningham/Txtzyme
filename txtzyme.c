@@ -144,6 +144,7 @@ uint16_t x = 0;
 
 void parse(const char *buf) {
 	uint16_t count = 0;
+	last = TCNT1;
 	char *loop;
 	char ch;
 	while ((ch = *buf++)) {
@@ -190,6 +191,7 @@ void parse(const char *buf) {
 				break;
 			case 'm':
 				_delay_ms(x);
+				last = TCNT1;
 				break;
 			case 'u': {
 				uint16_t now;
