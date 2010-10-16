@@ -113,7 +113,7 @@ put '/slide' do
 end
 
 get '/hum/*' do |n|
-  avg("#{n}{4sp150u}").to_s
+  avg("#{n}{150u4sp}").to_s
 end
 
 get '/rms/*' do |n|
