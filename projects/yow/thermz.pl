@@ -61,7 +61,7 @@ sub all_cnvt { rst; skip; cnvt; putz "750m" }
 sub one_cnvt { rst; skip; cnvt; {} until rd }
 sub one_data { rst; skip; data; my $c = r8; $c += 256 * r8 }
 
-sub temp_c { all_cnvt; 0.0625 * one_data }
+sub temp_c { one_cnvt; 0.0625 * one_data }
 sub temp_f { 32 + 1.8 * temp_c }
 
 # Application Helpers
