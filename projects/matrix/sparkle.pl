@@ -1,0 +1,61 @@
+#!/usr/bin/perl
+use strict;
+
+# Teensy
+
+open T, "+>/dev/cu.usbmodem12341" or die($!);
+select T; $| = 1;
+select STDOUT; $| = 1;
+
+# Txtzyme
+
+sub tz  { print T "@_\n" or die($!); }
+
+# NFM-12883
+
+my @anode = qw( 4c, 5f, 4f, 1c, 2f, 2c, 6c, 7c );
+my @cathode = qw( 0c, 5c, 0f, 3c, 7f, 1f, 6f, 3f );
+
+sub blink {
+    my ($x, $y) = (int($_[0]), int($_[1]));
+    return if $x<0 or $x>7 or $y<0 or $y>7;
+    my ($a, $c) = ($anode[$x], $cathode[$y]);
+    tz "${a}1o ${c}0o 50u i ${a}i";
+}
+
+start:
+
+# Flat
+
+for my $t (0..200) {
+    for my $y (0..7) {
+        for my $x (0..7) {
+            blink $x, $y;
+        }
+    }
+}
+
+# Random
+
+for (1..20000) {
+    blink rand(8), rand(8);
+}
+
+# Fuzzy
+
+for (1..50000) {
+    my $x = rand(2)+rand(2)+rand(2)+rand(2) + 2*sin($_/500.0);
+    my $y = rand(2)+rand(2)+rand(2)+rand(2) + 2*cos($_/500.0);
+    blink $x, $y;
+}
+
+# Spin
+
+for (1..50000) {
+    my ($r,$t,$w) = (rand(4.5)-1.5, -$_/1000.0, .5);
+    blink 
+        4+$r*sin($t)+rand($w)-rand($w),
+        4+$r*cos($t)+rand($w)-rand($w);
+}
+
+goto start;
