@@ -13,8 +13,13 @@ sub tz  { print T "@_\n" or die($!); }
 
 # NFM-12883
 
-my @anode = qw( 4c, 5f, 4f, 1c, 2f, 2c, 6c, 7c );
-my @cathode = qw( 0c, 5c, 0f, 3c, 7f, 1f, 6f, 3f );
+# my @cathode = qw( 4c 5f 4f 1c 2f 2c 6c 7c ); # original
+# my @anode = qw( 0c 5c 0f 3c 7f 1f 6f 3f );
+
+my @cathode = qw( 0f 5f 0c 3f 7c 1c 6c 3c ); # flipped
+my @anode = qw( 4f 5c 4c 1f 2c 2f 6f 7f );
+
+
 
 sub blink {
     my ($x, $y) = (int($_[0]), int($_[1]));
