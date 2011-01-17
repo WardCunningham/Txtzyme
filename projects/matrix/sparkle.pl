@@ -43,7 +43,19 @@ for my $y (0..7) {
 for my $y (0..7) {
     for my $x (0..7) {
         for my $t (0..300) {
-            blink $y, $x;
+            blink $y, 7-$x;
+        }
+    }
+}
+
+# Paint
+
+for my $y (0..7) {
+    for my $x (0..7) {
+        for my $t (0..300) {
+            blink 7-$x, 7-$y unless $t%($y+1);
+            my ($xx, $yy) = ($t%8, 7-$t/8%($y+1));
+            blink $xx, $yy unless $xx < 7-$x and $yy == 7-$y;
         }
     }
 }
@@ -76,9 +88,10 @@ for my $t (0..31415) {
 
 # Fuzzy
 
-for (1..50000) {
-    my $x = rand(2)+rand(2)+rand(2)+rand(2) + 2*sin($_/500.0);
-    my $y = rand(2)+rand(2)+rand(2)+rand(2) + 2*cos($_/500.0);
+for (1..31415) {
+    my $r = $_ / 10000;
+    my $x = rand(2)+rand(2)+rand(2)+rand(2) + $r*sin($_/500.0);
+    my $y = rand(2)+rand(2)+rand(2)+rand(2) + $r*-cos($_/500.0);
     blink $x, $y;
 }
 
