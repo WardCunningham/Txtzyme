@@ -9,7 +9,8 @@ select STDOUT; $| = 1;
 
 # Txtzyme
 
-sub tz  { print T "@_\n" or die($!); }
+sub putz { local $_; print T map "$_\n", @_ or die($!); }
+sub getz { local $_; putz @_; $_ = <T>; $_ =~ s/\r?\n?$//; $_ }
 
 # NFM-12883
 
@@ -25,7 +26,7 @@ sub blink {
     my ($x, $y) = (int($_[0]), int($_[1]));
     return if $x<0 or $x>7 or $y<0 or $y>7;
     my ($a, $c) = ($anode[$x], $cathode[$y]);
-    tz "${a}1o ${c}0o 50u i ${a}i";
+    putz "${a}1o ${c}0o 50u i ${a}i";
 }
 
 start:
