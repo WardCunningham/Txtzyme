@@ -31,6 +31,16 @@ sub blink {
 
 start:
 
+# # Step
+#
+# for my $y (0..7) {
+#     for my $x (0..7) {
+#         for my $t (0..2000) {
+#             blink $x, $y;
+#         }
+#     }
+# }
+
 # Flat
 
 for my $t (0..200) {
