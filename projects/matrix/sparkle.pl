@@ -90,13 +90,24 @@ for (1..(3141*6)) {
         4+$r*sin($t)+rand($w)-rand($w),
         4+$r*cos($t)+rand($w)-rand($w);
 }
-for (1..80000) {
+for (1..3141*24) {
     my ($r,$t,$w) = $_%4 ?
         (rand(4.5)-1.5, -$_/1000.0, .3):
         (rand(1.5)+2.5, -$_/1000.0/12, .3);
     blink
         4+$r*sin($t)+rand($w)-rand($w),
         4+$r*cos($t)+rand($w)-rand($w);
+}
+
+# Star
+
+for my $t (0..31415) {
+    my $r = 3 * sin(3.002 * $t) + rand(.5);
+        blink 4+$r*sin($t), 4+$r*cos($t);
+}
+for my $t (0..31415) {
+    my $r = ($t/5000) + 3 * sin(3.002 * $t) + rand(.3);
+        blink 4+$r*sin($t), 4+$r*cos($t);
 }
 
 goto start;
