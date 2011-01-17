@@ -3,7 +3,7 @@ Txtzyme Matrix
 -------------
 by Ward Cunningham
 
-This project lights an 8x8 LED matrix with various demo patterns. The NFM-12883 device is insterted into a breadboard socket such that the 16 pins connect to the C and F ports of the Teensy++. Watch the video:
+This project lights an 8x8 LED matrix with various patterns. The NFM-12883 device is insterted into a breadboard socket such that the 16 pins connect to the C and F ports of the Teensy++. Watch the video:
 
 http://dorkbotpdx.org/blog/wardcunningham/txtzyme_sparkles_on_led_matrix
 
@@ -28,4 +28,4 @@ Uno is whole. There is one of him. Counting we find one. He is the integer one. 
 
 Uno asks us to question whole numbers. Although he appears whole, he is whole only in our perception. He is actually a distribution of blinking lights, not a whole anything.
 
-Neither are we a whole anything. We believe in whole numbers, integers, because we perceive ourselves as whole. If there are three of us in a room then our count equals 3, not 3.0001 or 2.9999. But what are we counting? Only our perception is any of us whole; any of us an integer. 
+Neither are we a whole anything. We believe in whole numbers, integers, because we perceive ourselves as whole. If there are three of us in a room then our count equals 3, not 3.0001 or 2.9999. But what are we counting? Only in our perception is any of us whole; any of us an integer.
