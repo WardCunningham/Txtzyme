@@ -20,13 +20,11 @@ sub getz { local $_; putz @_; $_ = <T>; $_ =~ s/\r?\n?$//; $_ }
 my @cathode = qw( 0f 5f 0c 3f 7c 1c 6c 3c ); # flipped
 my @anode = qw( 4f 5c 4c 1f 2c 2f 6f 7f );
 
-putz "6d0o";
-
 sub blink {
     my ($x, $y) = (int($_[0]), int($_[1]));
     return if $x<0 or $x>7 or $y<0 or $y>7;
     my ($a, $c) = ($anode[$x], $cathode[$y]);
-    putz "${a}1o ${c}0o 50u i ${a}i";
+    putz "6d0o ${a}1o ${c}0o 50u i ${a}i 6d1o";
 }
 
 start:
