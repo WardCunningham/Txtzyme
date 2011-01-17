@@ -25,7 +25,7 @@ sub blink {
     my ($x, $y) = (int($_[0]), int($_[1]));
     return if $x<0 or $x>7 or $y<0 or $y>7;
     my ($a, $c) = ($anode[$x], $cathode[$y]);
-    putz "${a}1o ${c}0o 50u i ${a}i";
+    putz "6d0o ${a}1o ${c}0o 50u i ${a}i 6d1o";
 }
 
 sub rn {
