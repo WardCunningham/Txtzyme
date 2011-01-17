@@ -3,7 +3,10 @@ use strict;
 
 # Teensy
 
-open T, "+>/dev/cu.usbmodem12341" or die($!);
+my $recent = `ls -tr /dev/cu.usbmodem* | head -1`;
+chomp $recent;
+print "found $recent\n";
+open T, "+>$recent" or die($!);
 select T; $| = 1;
 select STDOUT; $| = 1;
 
