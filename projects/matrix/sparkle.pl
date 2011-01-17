@@ -31,15 +31,22 @@ sub blink {
 
 start:
 
-# # Step
-#
-# for my $y (0..7) {
-#     for my $x (0..7) {
-#         for my $t (0..2000) {
-#             blink $x, $y;
-#         }
-#     }
-# }
+# Step
+
+for my $y (0..7) {
+    for my $x (0..7) {
+        for my $t (0..300) {
+            blink $x, $y;
+        }
+    }
+}
+for my $y (0..7) {
+    for my $x (0..7) {
+        for my $t (0..300) {
+            blink $y, $x;
+        }
+    }
+}
 
 # Flat
 
@@ -56,6 +63,16 @@ for my $t (0..200) {
 for (1..20000) {
     blink rand(8), rand(8);
 }
+for (1..20000) {
+    blink rand(4)+rand(4), rand(4)+rand(4);
+}
+
+# Circle
+
+for my $t (0..31415) {
+    my $r = 2 + sin($t/1000) + rand(1);
+        blink 4+$r*sin($t), 4+$r*cos($t);
+}
 
 # Fuzzy
 
@@ -67,11 +84,17 @@ for (1..50000) {
 
 # Spin
 
-for (1..8000000) {
+for (1..(3141*6)) {
+    my ($r,$t,$w) = (rand(4.5)-1.5, -$_/1000.0, .3);
+    blink
+        4+$r*sin($t)+rand($w)-rand($w),
+        4+$r*cos($t)+rand($w)-rand($w);
+}
+for (1..80000) {
     my ($r,$t,$w) = $_%4 ?
-        (rand(4.5)-1.5, -$_/100000.0, .3):
-        (rand(1.5)+2.5, -$_/100000.0/12, .3);
-    blink 
+        (rand(4.5)-1.5, -$_/1000.0, .3):
+        (rand(1.5)+2.5, -$_/1000.0/12, .3);
+    blink
         4+$r*sin($t)+rand($w)-rand($w),
         4+$r*cos($t)+rand($w)-rand($w);
 }
