@@ -29,6 +29,7 @@ sub blink {
 
 start:
 
+
 # Step
 
 for my $y (0..7) {
@@ -45,6 +46,7 @@ for my $y (0..7) {
         }
     }
 }
+
 
 # Paint
 
@@ -73,6 +75,31 @@ for my $t (0..100) {
 for (1..20000) {
     blink rand(8), rand(8);
 }
+
+# Rain
+
+my @s = (0,0,0,0,0,0,0,0);
+for (0..7) {
+    $s[$_] = rand(256);
+}
+for my $t (0..200) {
+    for (0..3) {
+        for my $y (0..7) {
+            my $s = $s[$y];
+            for my $x (0..7) {
+                blink $y,$x if $s%2;
+                $s /= 2;
+            }
+        }
+    }
+    for (0..6) {
+        $s[7-$_] = $s[6-$_];
+    }
+    $s[0] = rand(256);
+}
+
+# Less Flat
+
 for (1..20000) {
     blink rand(4)+rand(4), rand(4)+rand(4);
 }
