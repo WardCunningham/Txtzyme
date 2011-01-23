@@ -29,7 +29,6 @@ sub blink {
 
 start:
 
-
 # Step
 
 for my $y (0..7) {
@@ -76,7 +75,7 @@ for (1..20000) {
     blink rand(8), rand(8);
 }
 
-# Rain
+# Paper Tape
 
 my @s = (0,0,0,0,0,0,0,0);
 for (0..7) {
@@ -96,6 +95,27 @@ for my $t (0..200) {
         $s[7-$_] = $s[6-$_];
     }
     $s[0] = rand(256);
+}
+
+# Rain
+
+my (@x,@y,@v) = ((),(),());
+for my $i (0..10) {
+    push(@x, rand(8));
+    push(@y, rand(8));
+    push(@v, (1+rand(1))/20);
+}
+for my $t (0..3000) {
+    for my $i (0..$#y) {
+        if ($y[$i]>10) {
+            $x[$i] = rand(8);
+            $y[$i] = 0;
+            $v[$i] = (1+rand(1))/20;
+        } else {
+            $y[$i] = $y[$i]+$v[$i];
+        }
+        blink $y[$i]-rand(2), $x[$i];
+    }
 }
 
 # Less Flat
