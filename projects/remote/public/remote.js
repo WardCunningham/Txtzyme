@@ -1,5 +1,15 @@
 $(document).ready(function(){
 
+	$('form.commands').submit(function (data) {
+		var query = $('input.query').val();
+		$('p.result').text(query);
+		$('input.query').val("");
+		$.getJSON('getz/'+query, function(data) {
+			$('p.result').html(data.result);
+		});
+		return false;
+	});
+
 	function port_pin () {
 		var port = $('[name=port]:checked').attr('value');
 		var pin = $('[name=pin]:checked').attr('value');

@@ -86,6 +86,10 @@ helpers do
 
 end
 
+get %r{/getz/(.*)} do |query|
+  {:result => vect(query).join("\n").gsub(/\n/,"<br>")}.to_json
+end
+
 get %r{/([b-f])/([0-7])} do |port, pin|
   dict "_bit_#{pin}#{port}ip"
 end
