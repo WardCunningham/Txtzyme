@@ -47,6 +47,11 @@ int main(void) {
 	LED_CONFIG;
 	LED_ON;
 
+	// normal mode, 2 MHz, count to 2^16 and roll over
+	TCCR1A = 0x00;
+	TCCR1B = 0x02;
+	TCCR1C = 0x00;
+
 	// initialize the USB, and then wait for the host
 	// to set configuration.  If the Teensy is powered
 	// without a PC connected to the USB port, this
@@ -134,10 +139,12 @@ uint8_t recv_str(char *buf, uint8_t size) {
 
 uint8_t port = 'd'-'a';
 uint8_t pin = 6;
+uint16_t last = 0;
 uint16_t x = 0;
 
 void parse(const char *buf) {
 	uint16_t count = 0;
+	last = TCNT1;
 	char *loop;
 	char ch;
 	while ((ch = *buf++)) {
@@ -184,10 +191,15 @@ void parse(const char *buf) {
 				break;
 			case 'm':
 				_delay_ms(x);
+				last = TCNT1;
 				break;
-			case 'u':
-				_delay_loop_2(x*(F_CPU/4000000UL));
+			case 'u': {
+				uint16_t now;
+				uint16_t delta = x*2;
+				do { now = TCNT1; } while (now-last < delta);
+				last = now;
 				break;
+				}
 			case '{':
 				count = x;
 				loop = buf;

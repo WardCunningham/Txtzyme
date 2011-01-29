@@ -37,7 +37,7 @@ led 0;
 # Application Helpers
 
 sub msg { my @m = split //,@_[0]; ch 3,$m[0]; ch 2,$m[1]; ch 1,$m[2]; ch 0,$m[3]; }
-sub txt { my ($t) = @_; for my $i (0..60) { msg (substr $t, $i, 4); tz "_wait_100m" }}
+sub txt { my ($t) = @_; bri 3; for my $i (0..60) { msg (substr $t, $i, 4); tz "_wait_100m" }}
 sub syn { tz "_syn_"; while (1) {last if <T> =~ /syn/}}
 
 while (1) {

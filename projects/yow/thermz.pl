@@ -44,7 +44,7 @@ sub rst { getz "${pin}0o480ui60uip420u" }
 sub wr { putz $_[0] ? "${pin}0oi60u" : "${pin}0o60ui" }
 sub w8 { my ($b) = @_; for (0..7) { wr($b&1); $b /= 2; } }
 sub rd { getz "${pin}0oiip45u" }
-sub r8 { my $b = 0; for (0..7) { $b |= (rd()<<$_) } return $b }
+sub r8 { led 1; my $b = 0; for (0..7) { $b |= (rd()<<$_) } led 0; return $b }
 sub r { my $n = 0; for my $i (0..($_[0]-1)) {$b += (r8() << 8*$i)} $b }
 
 # DS18B20 Thermometer Functions
@@ -61,7 +61,7 @@ sub all_cnvt { rst; skip; cnvt; putz "750m" }
 sub one_cnvt { rst; skip; cnvt; {} until rd }
 sub one_data { rst; skip; data; my $c = r8; $c += 256 * r8 }
 
-sub temp_c { all_cnvt; 0.0625 * one_data }
+sub temp_c { one_cnvt; 0.0625 * one_data }
 sub temp_f { 32 + 1.8 * temp_c }
 
 # Application Helpers
