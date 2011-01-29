@@ -193,7 +193,9 @@ void parse(const char *buf) {
 				_delay_ms(x);
 				last = TCNT1;
 				break;
-			case 'u': {
+			case 'u':
+				_delay_loop_2(x*(F_CPU/4000000UL));
+			case 'U': {
 				uint16_t now;
 				uint16_t delta = x*2;
 				do { now = TCNT1; } while (now-last < delta);
@@ -230,7 +232,7 @@ void parse(const char *buf) {
 				send_str(PSTR("\r\n"));
 				break;
 			case 'h':
-				send_str(PSTR("0-9<num>\tenter number\r\n<num>p\t\tprint number\r\n<num>a-f<pin>\tselect pin\r\n<pin>i<num>\tinput\r\n<pin><num>o\toutput\r\n<num>m\t\tmsec delay\r\n<num>u\t\tusec delay\r\n<num>{}\t\trepeat\r\nk<num>\t\tloop count\r\n_<words>_\tprint words\r\n<num>s<num>\tanalog sample\r\nv\t\tprint version\r\nh\t\tprint help\r\n<pin>t<num>\tpulse width\r\n"));
+				send_str(PSTR("0-9<num>\tenter number\r\n<num>p\t\tprint number\r\n<num>a-f<pin>\tselect pin\r\n<pin>i<num>\tinput\r\n<pin><num>o\toutput\r\n<num>m\t\tmsec delay\r\n<num>u\t\tusec delay\r\n<num>U\t\tusec wait\r\n<num>{}\t\trepeat\r\nk<num>\t\tloop count\r\n_<words>_\tprint words\r\n<num>s<num>\tanalog sample\r\nv\t\tprint version\r\nh\t\tprint help\r\n<pin>t<num>\tpulse width\r\n"));
 				break;
 			case 't':
 				*(uint8_t *)(0x21 + port * 3) &= ~(1 << pin);		// direction = input
