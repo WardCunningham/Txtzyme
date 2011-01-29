@@ -3,11 +3,17 @@ $(document).ready(function(){
 	$('form.commands').submit(function (data) {
 		var query = $('input.query').val();
 		$('p.result').text(query);
-		$('input.query').val("");
+		$('input.query').val("").data("query", query);;
 		$.getJSON('getz/'+query, function(data) {
 			$('p.result').html(data.result);
 		});
 		return false;
+	});
+
+	$('input.query').keydown(function(event){
+		if(event.which == 38) {
+			$('input.query').val($('input.query').data("query"));
+		}
 	});
 
 	function port_pin () {
