@@ -99,6 +99,7 @@ for (@pins) {
         map wr($_), @at;
         #read temp ------------
         data; my $c = r8; $c += 256 * r8;
+        $c = $c-2**16 if $c>=2**15;
         print "\t\"$code\":   $c,\n";
 
     } while(@st);
