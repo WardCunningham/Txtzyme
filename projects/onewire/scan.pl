@@ -69,6 +69,7 @@ sleep 1;
 print "{\n";
 for (@pins) {
     $pin = $_;
+	print "\"$_\":\t{\n";
 
     my @st = ();
     do {
@@ -103,6 +104,7 @@ for (@pins) {
         print "\t\"$code\":   $c,\n";
 
     } while(@st);
+	print "},\n";
 }
 print "}\n";
 
