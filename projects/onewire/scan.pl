@@ -53,7 +53,7 @@ sub temp_f { 32 + 1.8 * temp_c }
 
 # Application: read temps in SensorServer compatible format
 
-my @pins = ('7d', '5d', '4d');
+my @pins = ('7d', '5d', '4d', '3d');
 sub b2d {oct "0b" . reverse @_}
 
 # start convert on all pins
