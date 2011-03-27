@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-# while sleep .5; do perl test.pl; done
 
 use strict;
 
@@ -14,13 +13,6 @@ select STDOUT; $| = 1;
 sub putz { local $_; print T map "$_\n", @_ or die($!) }
 sub getz { local $_; putz @_; $_ = <T>; $_ =~ s/\r?\n?$//; $_ }
 putz "_ok_"; $_ = getz until /ok/;
-
-# Bi-Color LED (between B0, B1)
-
-sub red { putz "1bo" }
-sub grn { putz "0b1o" }
-sub off { putz "1b0obo" }
-off;
 
 # One-Wire Protocol
 
