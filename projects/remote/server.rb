@@ -140,6 +140,10 @@ get '/ss/onewire' do
   `cd ../onewire; perl ./scan.pl`
 end
 
+get %r{/one/([0-7][abcdef])} do |pin|
+  `cd ../onewire;QUERRY_STRING='pin=#{pin}' perl ./scan.pl`
+end
+
 get '/mcu' do
   { :version => getz("v"), :help => vect("h") }.to_json
 end
