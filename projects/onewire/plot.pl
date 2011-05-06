@@ -1,6 +1,5 @@
 $n = 12;
-open F, '<data.log';
-for (<F>) {
+for (<>) {
 	($a,$b,$c) = /(\d+\.\d)\s+(\d+\.\d)\s+(\d+\.\d)/m;
 	$x += $a+$b+$c;
 	next if ++$i % $n;
