@@ -57,7 +57,7 @@ void txtEval (char *buf) {
       x = digitalRead(d);
       break;
     case 'o':
-      digitalWrite(d, x);
+      digitalWrite(d, x%2);
       break;
     case 'm':
       delay(x);
