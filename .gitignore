@@ -6,3 +6,4 @@
 *.o
 *.sym
 cu
+.DS_Store
