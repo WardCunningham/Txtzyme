@@ -93,10 +93,12 @@ for (@pins) {
         #read temp ------------
         data; my $c = r8; $c += 256 * r8;
         $c = $c-2**16 if $c>=2**15;
-        print "\t\"$code\":   $c,\n";
+        my $sep = @st ? ',' : '';
+        print "\t\"$code\":   $c$sep\n";
 
     } while(@st);
-    print "},\n";
+    my $sep = $pin != $pins[-1] ? ',' : '';
+    print "}$sep\n";
 }
 print "}\n";
 
