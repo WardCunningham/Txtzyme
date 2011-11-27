@@ -1,0 +1,78 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf350
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww15080\viewh14040\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+
+\f0\b\fs58 \cf0 Getting Started With Txtzyme
+\b0\fs28 \
+\
+
+\b\fs38 1. Prepare your Computer
+\b0\fs28 \
+\
+Txtzyme appears as a USB device offering a "serial" protocol originally intended for use with modems. Prepare your computer to talk to Txtzyme as follows:\
+\
+
+\b Linux
+\b0 :\
+Install UDEV Rules to make the port writable: {\field{\*\fldinst{HYPERLINK "http://www.pjrc.com/teensy/49-teensy.rules"}}{\fldrslt http://www.pjrc.com/teensy/49-teensy.rules}}\
+\
+
+\b Mac
+\b0 :\
+No special preparation.\
+\
+
+\b Windows
+\b0 :\
+Install the serial driver available here: {\field{\*\fldinst{HYPERLINK "http://www.pjrc.com/teensy/serial_install.exe"}}{\fldrslt http://www.pjrc.com/teensy/serial_install.exe}}\
+\
+Note: After installing the driver, it should appear as a COM port.\'a0 The only reasonable way to know the number is to look for it in the Windows Device Manager.\'a0 It will be in the "Ports" section, and the name will be "USB Serial (Communication Class, Abstract Control Model)". \
+\
+\
+
+\b\fs38 2. Download a Test Program
+\b0\fs28 \
+\
+There is a project in the Txtzyme GitHub that describes sending morse code through the Teensy's built-in LED. Download the output from the morse generator. This will be a series of Txtzyme commands that will blink out code.\
+\
+Download from here: {\field{\*\fldinst{HYPERLINK "https://github.com/WardCunningham/Txtzyme/blob/master/projects/morse/morse.txt"}}{\fldrslt https://github.com/WardCunningham/Txtzyme/blob/master/projects/morse/morse.txt}}\
+\
+\
+
+\b\fs38 3. Copy the Program to Txtzyme
+\b0\fs28 \
+\
+Operating systems vary in how you access the Txtzyme serial device. You may have to explore. These are the likely commands you will use:\
+\
+
+\b Linux
+\b0 :\
+cat morse.txt >/dev/ttyACM0\
+\
+
+\b Mac
+\b0 :\
+cat morse.txt /dev/cu.usbmodem12341\
+\
+
+\b Windows
+\b0 :\
+copy morse.txt \\COM1\
+\
+Note: You might have use the special filename format.\'a0 For COM12, it would be: "{\field{\*\fldinst{HYPERLINK "smb://./COM12"}}{\fldrslt \\\\.\\COM12}}".\'a0 This is documented in Microsoft KB115831. {\field{\*\fldinst{HYPERLINK "http://support.microsoft.com/kb/115831"}}{\fldrslt http://support.microsoft.com/kb/115831}}\
+\
+\
+
+\b\fs38 More Fun
+\b0\fs28 \
+\
+You should see the LED blinking out morse code. If you have trouble, try consulting the introductory material on the Teensy site: {\field{\*\fldinst{HYPERLINK "http://www.pjrc.com/teensy/first_use.html"}}{\fldrslt http://www.pjrc.com/teensy/first_use.html}}\
+\
+You will want to explore the many ways Txtzyme has already been used in fun projects. Follow WardCunninghams Txtzyme posts at DorkbotPDX. Start with this post (which links to dozens more):\
+\
+	{\field{\*\fldinst{HYPERLINK "http://dorkbotpdx.org/blog/wardcunningham/shell_programming_with_txtzyme"}}{\fldrslt http://dorkbotpdx.org/blog/wardcunningham/shell_programming_with_txtzyme}}\
+\
+Please share your experiences with comments to this article or on any blog using the very searchable word: 
+\b Txtzyme}
