@@ -9,6 +9,7 @@ do echo ============= $mcu ==============
 	make clean
 	make -f /tmp/txtzyme_makefile
 	mv txtzyme.hex hex/$mcu.hex
+	mv txtzyme.elf hex/$mcu.elf
 done
 make clean
 rm /tmp/txtzyme_makefile
