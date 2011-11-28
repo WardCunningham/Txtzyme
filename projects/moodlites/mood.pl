@@ -30,7 +30,8 @@ my $heat = sprintf("%.1f", ($1/16.0)*9/5+32);
 
 my $bulb = int(rand(50))+1;
 
-if ($heat > 90)    { set($bulb, 255, 15, 0, 0); $show = "red"; }
+if (-f 'next.txt') { set($bulb, 255, $c[0], $c[1], $c[2]) if @c = split(/\./, `cat next.txt; rm next.txt`); $show = "next" }
+elsif ($heat > 90) { set($bulb, 255, 15, 0, 0); $show = "red"; }
 elsif ($heat > 70) { set($bulb, 255, 0, 15, 0); $show = "green"; }
 else               { set($bulb, 255, 0, 0, 15); $show = "blue"; }
 
