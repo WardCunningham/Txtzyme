@@ -16,6 +16,3 @@ sub set {
 }
 
 for (1..50) { set($_, 255, 0, 0, 15) }
-
-$status = '.'x50;
-`echo $status >> heat.log`;
