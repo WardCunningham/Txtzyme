@@ -9,7 +9,7 @@ open T, "+>/dev/cu.usbmodem12341" or die($!);
 select T; $| = 1;
 select STDOUT; $| = 1;
 
-use Fcntl ":flock";
+use Fcntl ":flock"; 
 flock T, LOCK_EX;
 
 # Txtzyme
@@ -54,50 +54,22 @@ sub one_data { rst; skip; data; my $c = r8; $c += 256 * r8 }
 sub temp_c { all_cnvt; 0.0625 * one_data }
 sub temp_f { 32 + 1.8 * temp_c }
 
-# ROM Search
+# Read one device
 
-my @st = ();
-do {
-    my @at = ();
-    my @pr = ();
-    print "reset: ", rst, "\n";
-    srom;
-    my @nx = ();
-    while ((scalar @at) < 64) {
-        my $lo = rd;
-        my $hi = rd;
-        push @pr, 2*!$hi+!$lo;
-        my $x = (scalar @st) ? shift @st : $lo;
-        wr $x;
-        @nx = (@at,1) if !$x && !$hi;
-        push @at, $x
-    }
-    @st = @nx;
-    print "pr: ", @pr, "\n";
-    print "at: ", @at, "\n";
-    print "st: ", @st, "\n";
-    print "\n";
-} while(@st);
+my @ar = split '', "0001010011001101111011110110010110000000000000000000000000111101";
 
-# Read ROM for single device
+sub get {
+rst;
+match;
+for (@ar) {wr $_*1}
+cnvt;
+{} until rd;
 
-# rst;
-# rrom;
-# printf "family: %x\n", r8;
-# printf "serial: %x\n", r 6;
-# printf "check: %x\n", r8;
+rst;
+match;
+for (@ar) {wr $_*1}
+data;
+r 2;
+}
 
-# Search ROM
-
-# Show rising (red) and falling (green) temps
-
-# my ($old, $new) = (0, 0);
-# while (1) {
-#     ($old, $new) = ($new, temp_c());
-#     printf "%3.5f c\n", $new;
-#     off;
-#     red if $new > $old;
-#     grn if $old > $new;
-# }
-
-
+print get()+get()+get()+get()-800,"\n"
