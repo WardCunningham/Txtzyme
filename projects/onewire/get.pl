@@ -49,27 +49,20 @@ sub match { w8 0x55 }
 
 sub all_cnvt { rst; skip; cnvt; putz "750m" }
 sub one_cnvt { rst; skip; cnvt; {} until rd }
-sub one_data { rst; skip; data; my $c = r8; $c += 256 * r8 }
+sub one_data { rst; skip; data; my $c = r8; $c = r(2); $c<2**15 ? $c : $c-2**16; }
 
 sub temp_c { all_cnvt; 0.0625 * one_data }
 sub temp_f { 32 + 1.8 * temp_c }
 
-# Read one device
+# Read specific device
 
 my @ar = split '', "0001010011001101111011110110010110000000000000000000000000111101";
 
 sub get {
-rst;
-match;
-for (@ar) {wr $_*1}
-cnvt;
-{} until rd;
-
-rst;
-match;
-for (@ar) {wr $_*1}
-data;
-r 2;
+  rst; match; for (@ar) {wr $_*1} cnvt; {} until rd;
+  rst; match; for (@ar) {wr $_*1} data; my $c=r(2); $c<2**15 ? $c : $c-2**16;
 }
 
-print get()+get()+get()+get()-800,"\n"
+my $c = (get()+get()+get()+get())/4.0/16.0;
+my $f = $c*9/5+32;
+print "$f\n";
