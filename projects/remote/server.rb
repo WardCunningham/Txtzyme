@@ -16,11 +16,13 @@ end
 
 before do
   content_type "text/plain"
+  $tz.flock(File::LOCK_EX)
   putz "6d0o"
 end
 
 after do
   putz "6d1o"
+  $tz.flock(File::LOCK_UN)
 end
 
 helpers do
