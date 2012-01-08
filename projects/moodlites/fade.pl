@@ -43,7 +43,8 @@ sub fade {
   my ($r,$g,$b) = @_;
   for $n (1..$sn) {
     for (1..50) {
-      set ($_, 255, sn($_+$n+$pn*$r), sn($_+$n+$pn*$g),sn($_+$n+$pn*$b));
+      my $pb = $_*3;
+      set ($_, 255, sn($pb+$n+$pn*$r), sn($pb+$n+$pn*$g),sn($pb+$n+$pn*$b));
     }
   }
 }
