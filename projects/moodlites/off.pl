@@ -30,7 +30,9 @@ sub all {
 use Fcntl ":flock"; 
 flock T, LOCK_EX;
  
-all(0,0,0);
+for (1..5) {
+  all(0,0,0);
+}
 
 flock T, LOCK_UN; 
 
