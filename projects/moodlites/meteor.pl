@@ -33,7 +33,7 @@ sub outbound { for $i (0..60) { front ($i); back ($i-10); } }
 use Fcntl ":flock"; 
 flock T, LOCK_EX;
 
-$n = int (rand(6));
+$n = int (rand(60));
 inbound() if $n == 0;
 outbound() if $n == 1;
 
