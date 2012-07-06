@@ -36,3 +36,8 @@ The script uses sleep to space four invocations of mood.pl 15 seconds apart.
 * 0 0 * * * (cd Txtzyme/projects/moodlines; mv cron.log old.cron.log)
 
 We've checked for proper operation by computing the distribution of log entries for each of 60 possible seconds.
+
+If you want to see what you're lights have been doing, there is a log viewer that produces color-coded output from cron.logs with a command something like this.
+
+* cat old.cron.log cron.log | perl show.pl
+
