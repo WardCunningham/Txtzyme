@@ -1,4 +1,4 @@
-open (T, ">/dev/cu.usbmodem123451") or die($!);
+open (T, ">".`ls /dev/cu.usbmodem*`) or die($!);
 
 sub start { print T "1o" }
 sub zero { print T "0o1o2u" }

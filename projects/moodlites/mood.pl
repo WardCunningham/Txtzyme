@@ -2,7 +2,7 @@ exit;
 
 # Textzyme
 
-open (T, ">/dev/cu.usbmodem123451") or die($!);
+open (T, ">".`ls /dev/cu.usbmodem*`) or die($!);
 
 # GE G35 control signals
 # from http://www.deepdarc.com/2010/11/27/hacking-christmas-lights/
