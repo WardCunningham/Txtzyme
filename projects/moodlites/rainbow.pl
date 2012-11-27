@@ -32,11 +32,9 @@ sub rn {
 }
 
 sub br {
-  return 0 if $_[0]<0.3;
-  int(15.9*$_[0]);
+  return 0 if $_[0]<0.1;
+  int(15.9*$_[0])
 }
-
-# see http://en.wikipedia.org/wiki/HSL_and_HSV#From_HSV
 
 sub sat {
   ($hue) = @_;
@@ -50,9 +48,12 @@ sub sat {
   return (br($r[$n]), br($g[$n]), br($b[$n]))
 }
 
-
-while (1) {
-  ($r, $g, $b) = sat(rn(360));
-  set rn(50)+1, 255, $r, $g, $b;
-  select undef, undef, undef, 0.3;
+$i = 0;
+while(1) {
+  $i+=7;
+  for $bulb (1..50) {
+    ($r, $g, $b) = sat($i + 20*$bulb);
+    set $bulb, 255, $r, $g, $b
+  }
+  #select undef, undef, undef, 0.3;
 }
