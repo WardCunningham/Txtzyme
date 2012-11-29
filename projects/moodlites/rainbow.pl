@@ -32,7 +32,7 @@ sub rn {
 }
 
 sub br {
-  return 0 if $_[0]<0.1;
+  # return 0 if $_[0]<0.1;
   int(15.9*$_[0])
 }
 
@@ -50,9 +50,9 @@ sub sat {
 
 $i = 0;
 while(1) {
-  $i+=7;
+  $i+=5;
   for $bulb (1..50) {
-    ($r, $g, $b) = sat($i + 20*$bulb);
+    ($r, $g, $b) = sat($i + 360/20*$bulb);
     set $bulb, 255, $r, $g, $b
   }
   #select undef, undef, undef, 0.3;
