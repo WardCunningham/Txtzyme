@@ -31,6 +31,29 @@ sub snooze {
   select undef, undef, undef, $sec;
 }
 
+my @bulbs = [];
+for (1..50) {
+  push @bulbs, "255,255,0";
+}
+
+sub writeBulbs {
+  open B, '>/Users/ward/g35/newBulbs';
+  print B @bulbs;
+  close B;
+  rename '/Users/ward/g35/newBulbs', '/users/ward/g35/bulbs';
+}
+
+sub sc {
+  return int($_[0]/16);
+}
+
+sub set256 {
+  my ($bulb, $r, $g, $b) = @_;
+  set $bulb, 255, sc($r), sc($g), sc($b);
+  $bulbs[$bulb] = "$r,$g,$b\n"
+}
+
+
 
 
 # Like normal.pl (from program)
@@ -66,7 +89,7 @@ sub flicker {
   shuffle();
   for my $bulb (@bulb) {
     my ($r, $g, $b) = sat($hue+rn($dev));
-    set $bulb, 255, $r, $g, $b;
+    set256 $bulb, 16*$r, 16*$g, 16*$b;
     snooze 0.05;
   }
 }
@@ -82,29 +105,13 @@ sub program {
 
 # like solid.pl (from color)
 
-sub sc {
-  return int($_[0]/16);
-}
-
-my @bulbs = [];
-for (1..50) {
-  push @bulbs, "0,0,0";
-}
-
-sub writeBulbs {
-  open B, '>/Users/ward/g35/newBulbs';
-  print B @bulbs;
-  close B;
-  rename '/Users/ward/g35/newBulbs', '/users/ward/g35/bulbs';
-}
-
 sub solid {
   $_ =`cat /Users/ward/g35/color`;
-  push @bulbs, $_;
-  shift @bulbs;
+  unshift @bulbs, $_;
+  pop @bulbs;
   for my $bulb (1..50) {
-    my ($r, $g, $b) = $bulbs[51-$bulb] =~ /(\d+)/g;
-    set $bulb, 255, sc($r), sc($g), sc($b);
+    my ($r, $g, $b) = $bulbs[$bulb] =~ /(\d+)/g;
+    set256 $bulb, $r, $g, $b;
   }
   writeBulbs;
   snooze 0.1;
