@@ -20,18 +20,8 @@ sub set {
   start(); bulb($bulb); light($light); color($blue); color($green); color($red); stop();
 }
 
-sub all {
-  my ($red, $green, $blue) = @_;
-  for (1..50) { set($_, 255, $red, $green, $blue) }
-}
-
 sub rn {
   int($_[0]*rand());
-}
-
-sub br {
-  return 0 if $_[0]<0.3;
-  int(15.9*$_[0]);
 }
 
 sub sc {
