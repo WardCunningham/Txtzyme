@@ -63,10 +63,12 @@ $i = 0;
 while (1) {
   $hue = rn(360);
   shuffle();
+  $dev = (`cat /Users/ward/g35/program` - 1) * 360 / 5;
   for $bulb (@bulb) {
-    ($r, $g, $b) = sat($hue+rn(180));
+    ($r, $g, $b) = sat($hue+rn($dev));
     set $bulb, 255, $r, $g, $b;
-    select undef, undef, undef, 0.1;
+    # set $bulb, 255, $r, $g, $b;
+    select undef, undef, undef, 0.05;
   }
   sleep 5;
 }
