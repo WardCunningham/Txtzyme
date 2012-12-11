@@ -22,6 +22,22 @@ sub set {
   start(); bulb($bulb); light($light); color($blue); color($green); color($red); stop();
 }
 
+sub max {
+  my ($max, @vars) = @_;
+  for (@vars) {
+    $max = $_ if $_ > $max;
+  }
+  return $max;
+}
+
+sub sethdr {
+  my ($bulb, $red, $green, $blue) = @_;
+  my $light = max $red, $green, $blue;
+  return set $bulb, 0, 0, 0, 0 if $light == 0;
+  my ($r, $g, $b) = map int(255.0/$light*$_/16), ($red, $green, $blue);
+  set $bulb, $light, $r, $g, $b;
+}
+
 sub rn {
   int($_[0]*rand());
 }
@@ -43,13 +59,9 @@ sub writeBulbs {
   rename '/Users/ward/g35/newBulbs', '/users/ward/g35/bulbs';
 }
 
-sub sc {
-  return int($_[0]/16);
-}
-
 sub set256 {
   my ($bulb, $r, $g, $b) = @_;
-  set $bulb, 255, sc($r), sc($g), sc($b);
+  sethdr $bulb, $r, $g, $b;
   $bulbs[$bulb] = "$r,$g,$b\n"
 }
 
@@ -90,6 +102,7 @@ sub flicker {
   for my $bulb (@bulb) {
     my ($r, $g, $b) = sat($hue+rn($dev));
     set256 $bulb, 16*$r, 16*$g, 16*$b;
+    writeBulbs;
     snooze 0.05;
   }
 }
