@@ -31,6 +31,7 @@ sub max {
 sub sethdr {
   my ($bulb, $red, $green, $blue) = @_;
   my $light = max $red, $green, $blue;
+  return set $bulb, 0, 0, 0, 0 if $light == 0;
   my ($r, $g, $b) = map int(255.0/$light*$_/16), ($red, $green, $blue);
   set $bulb, $light, $r, $g, $b;
 }
