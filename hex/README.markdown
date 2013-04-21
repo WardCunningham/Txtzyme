@@ -14,6 +14,9 @@ The correspondences are as follows:
 - `at90usb646.hex` for Teensy++ 1.0
 - `atmega32u4.hex` for Teensy 2.0
 
+You can download the .elf file that corresponds to your Teensy. If you do, then the Teensy loader
+will check that you are actually programming the correct part as specified in the .elf file.
+
 Once Txtzyme is running you can send commands to it from the shell.
 Here is how to send a "blink" program from an OS X Terminal window:
 
