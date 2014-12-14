@@ -57,7 +57,27 @@ void txtEval (char *buf) {
       x = digitalRead(d);
       break;
     case 'o':
+      pinMode(d,OUTPUT);
       digitalWrite(d, x%2);
+      break;
+    case 'O': // write analog
+      pinMode(d,OUTPUT);
+      analogWrite(d,x);
+      break;
+// Teensy 3.1 and 3.0 specifc code
+#if defined(__MK20DX256__)|| defined(__MK20DX128__)
+    case 'F':  // See https://www.pjrc.com/teensy/td_pulse.html
+      analogWriteFrequency(d,x);  
+      break;
+    case 'R':  // Teensy3 bits of resolution 2-16 default was 8
+      analogWriteResolution(x);
+      break;  
+#endif
+    case 't':
+      tone(d,x);
+      break;
+    case 'T':
+      noTone(d);
       break;
     case 'm':
       delay(x);
