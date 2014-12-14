@@ -4,6 +4,7 @@ int d = 13;
 
 void setup() {
   Serial.begin(9600);
+  //txtEval("10d10T 1000m 2T 1000m 0T 0o\r\n"); // hint for a startup command
 }
 
 void loop() {
