@@ -4,6 +4,7 @@ int d = 13;
 
 void setup() {
   Serial.begin(9600);
+  //txtEval("10d10T 1000m 2T 1000m 0T 0o\r\n"); // hint for a startup command
 }
 
 void loop() {
@@ -54,6 +55,8 @@ void txtEval (char *buf) {
       d = x;
       break;
     case 'i':
+      pinMode(d,INPUT);
+    case 'r':
       x = digitalRead(d);
       break;
     case 'o':
@@ -73,11 +76,11 @@ void txtEval (char *buf) {
       analogWriteResolution(x);
       break;  
 #endif
-    case 't':
-      tone(d,x);
-      break;
     case 'T':
-      noTone(d);
+      if (x ==0 ) 
+        noTone(d);
+      else  
+        tone(d,x);
       break;
     case 'm':
       delay(x);
