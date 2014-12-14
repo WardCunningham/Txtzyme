@@ -73,11 +73,11 @@ void txtEval (char *buf) {
       analogWriteResolution(x);
       break;  
 #endif
-    case 't':
-      tone(d,x);
-      break;
     case 'T':
-      noTone(d);
+      if (x ==0 ) 
+        noTone(d);
+      else  
+        tone(d,x);
       break;
     case 'm':
       delay(x);
