@@ -1,6 +1,7 @@
 
 unsigned int x = 0;
 int d = 13;
+const int bufsize = 2048;
 
 void setup() {
   Serial.begin(9600);
@@ -8,8 +9,8 @@ void setup() {
 }
 
 void loop() {
-  char buf[64];
-  txtRead(buf, 64);
+  char buf[bufsize];
+  txtRead(buf, bufsize);
   txtEval(buf);
 }
 
