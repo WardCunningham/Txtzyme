@@ -90,8 +90,8 @@ Learn More
 
 Much of Txtzyme's development has been done as a recreational activity within Portland's Dorkbot community. Be sure to read the posts that recount this development.
 
-- <http://dorkbotpdx.org/blog/wardcunningham/shell_programming_with_txtzyme>
-- <http://dorkbotpdx.org/blog/wardcunningham/plotting_signals_with_txtzyme>
+- <http://txtzyme.com/view/shell-programming-with-txtzyme>
+- <http://txtzyme.com/view/plotting-signals-with-txtzyme>
 
 Txtzyme has been named to suggest *text* as *emzyme* within a larger system. The term has been tested to Google well too. 
 
