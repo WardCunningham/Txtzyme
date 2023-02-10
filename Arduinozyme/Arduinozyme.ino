@@ -1,7 +1,7 @@
 
 unsigned int x = 0;
 int d = 13;
-const unsigned int bufsize = 2048;
+const unsigned int bufsize = 1650; // 2048 is too large for Arduino Uno
 
 void setup() {
   Serial.begin(9600);
